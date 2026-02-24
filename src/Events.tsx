@@ -9,12 +9,6 @@ const Events: React.FC = () => {
                 <Radio className="w-24 h-24 text-accent-primary animate-pulse" />
             </div>
 
-            <div className="relative">
-                <div className="absolute -inset-4 border-8 border-grunge-black rotate-1 opacity-20" />
-                <h1 className="text-7xl md:text-[10rem] font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary py-6 px-12 rotate-[-1deg] inline-block relative z-10 zine-text">
-                    DEAD <span className="text-foreground">AIR</span>
-                </h1>
-            </div>
 
             {events.length === 0 ? (
                 <div className="bg-grunge-black text-foreground border-8 border-grunge-black p-12 relative rotate-1 overflow-hidden max-w-2xl text-center">

@@ -69,6 +69,49 @@
     width: max-content;
     animation: marquee 80s linear infinite;
   }
+
+  /* Ink Explosion Animation */
+  @keyframes ink-splash {
+    0% {
+      background-image: url('/assets/ink/stage_1.png');
+      opacity: 0;
+      transform: scale(0.3) rotate(-10deg);
+    }
+
+    15% {
+      opacity: 1;
+      transform: scale(0.8) rotate(5deg);
+    }
+
+    30% {
+      background-image: url('/assets/ink/stage_2.png');
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    60% {
+      background-image: url('/assets/ink/stage_3.png');
+      transform: scale(1.4) rotate(10deg);
+      opacity: 1;
+    }
+
+    100% {
+      background-image: url('/assets/ink/stage_3.png');
+      transform: scale(1.8) rotate(15deg);
+      opacity: 0;
+    }
+  }
+
+  .ink-explosion-overlay {
+    @apply absolute inset-[-50%] pointer-events-none opacity-0 transition-opacity duration-300;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    mix-blend-mode: multiply;
+  }
+
+  .group:hover .ink-explosion-overlay {
+    animation: ink-splash 0.6s steps(1, end) forwards;
+  }
 }
 
 :root {
