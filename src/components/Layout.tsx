@@ -26,6 +26,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         <Link to="/events" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Events</Link>
                         <Link to="/#frontline" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors rotate-1">Meet the Artists</Link>
                         <Link to="/scheduling" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Schedule Now</Link>
+                        <Link to="/aftercare" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors rotate-1">Aftercare</Link>
                     </nav>
                 </header>
 
@@ -51,7 +52,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         {/* Logo Section */}
                         <div className="flex flex-col items-center md:items-start gap-6">
                             <div className="flex gap-4 items-center">
-                                <img src="/Logo.png" alt="Below Ground Ink Primary" className="w-20 h-20 md:w-24 md:h-24 object-contain -rotate-3 hover:rotate-0 transition-transform bg-accent-primary/10 rounded-full p-2 border-2 border-accent-primary" />
                                 <img src="/Logo_White.png" alt="Below Ground Ink Secondary" className="w-20 h-20 md:w-24 md:h-24 object-contain rotate-3 hover:rotate-0 transition-transform bg-foreground/5 rounded-full p-2 border-2 border-foreground/20" />
                             </div>
                             <div className="flex flex-col font-black uppercase italic tracking-[0.2em] text-sm opacity-60 text-center md:text-left">
@@ -66,6 +66,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             <Link to="/events" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Events</Link>
                             <Link to="/#frontline" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Meet the Artists</Link>
                             <Link to="/scheduling" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Schedule Now</Link>
+                            <Link to="/aftercare" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Aftercare</Link>
                         </div>
 
                         {/* Contact Info */}

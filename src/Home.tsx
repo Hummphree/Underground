@@ -55,13 +55,13 @@ const Home: React.FC = () => {
             onUpdate: (self) => {
                 // Ignore early initial triggers to not override the intro load animation randomly
                 if (window.scrollY < 50) {
-                    gsap.to("#global-header", { y: 0, opacity: 1, duration: 0.3, overwrite: "auto" });
+                    gsap.to("#global-header", { opacity: 1, y: 0, duration: 0.3, overwrite: "auto", pointerEvents: 'auto' });
                 } else if (self.direction === 1) {
-                    // Scrolling down
-                    gsap.to("#global-header", { y: -100, opacity: 0, duration: 0.3, overwrite: "auto" });
+                    // Scrolling down (fade out)
+                    gsap.to("#global-header", { opacity: 0, duration: 0.3, overwrite: "auto", pointerEvents: 'none' });
                 } else if (self.direction === -1) {
-                    // Scrolling up
-                    gsap.to("#global-header", { y: 0, opacity: 1, duration: 0.3, overwrite: "auto" });
+                    // Scrolling up (fade in)
+                    gsap.to("#global-header", { opacity: 1, duration: 0.3, overwrite: "auto", pointerEvents: 'auto' });
                 }
             }
         });
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <section className="section_tabs pb-[500px]">
+            <section id="frontline" className="section_tabs pb-[500px]">
                 <div className="padding-section-large">
                     <div className="tabs_container">
                         <div className="tabs_height">
