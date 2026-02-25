@@ -1,15 +1,28 @@
+import React, { useEffect } from 'react';
+import { gsap } from 'gsap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Instagram, MapPin, Clock } from 'lucide-react';
 import GooeyMenu from './GooeyMenu';
 
 interface LayoutProps {
     children: React.ReactNode;
+    isTransitionStarted?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = ({ children, isTransitionStarted }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const isHome = location.pathname === '/';
+
+    useEffect(() => {
+        if (isTransitionStarted) {
+            // Header entrance animation synced with Preloader finish
+            gsap.fromTo("#global-header",
+                { y: -100, opacity: 0 },
+                { y: 0, opacity: 1, duration: 1.0, ease: "back.out(1.2)", delay: 0.2 }
+            );
+        }
+    }, [isTransitionStarted]);
 
     return (
         <div className="min-h-screen bg-background selection:bg-accent-primary selection:text-grunge-black">
@@ -30,7 +43,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-start md:justify-center group relative md:col-start-2">
                         <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative md:pb-3">
                             <div className="ink-explosion-overlay" />
-                            <img src="/Logo.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
+                            <img id="header-logo-target" src="/Logo.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
                         </div>
                     </Link>
 

@@ -8,7 +8,11 @@ import './HomeScroll.css';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const Home: React.FC = () => {
+interface HomeProps {
+    isTransitionStarted?: boolean;
+}
+
+const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }) => {
     // Get the two soonest events
     const upcomingEvents = events.slice(0, 2);
 
@@ -23,11 +27,11 @@ const Home: React.FC = () => {
         },
         {
             id: "2",
-            name: "Megan Rohr",
-            role: "APPRENTICE",
-            specialty: "BIOMECHANICAL SURREALISM",
-            bio: "Crafting vivid nightmares and otherworldly organisms. Megan's work is a celebration of the strange and the beautiful.",
-            photo: "https://picsum.photos/seed/megan-rohr-artist/600/400",
+            name: "Vex Thorne",
+            role: "RESIDENT ARTIST",
+            specialty: "NEO-TRADITIONAL GOTHIC",
+            bio: "Bridging the gap between classical illustration and aggressive street art. Vex specializes in high-contrast floral and anatomical pieces.",
+            photo: "https://picsum.photos/seed/vex-thorne-artist/600/400",
         }
     ];
 
@@ -46,7 +50,8 @@ const Home: React.FC = () => {
         return all;
     }, []);
 
-    const introRef = useRef<HTMLDivElement>(null);
+    const logoRef = useRef<HTMLDivElement>(null);
+    const heroContentRef = useRef<HTMLDivElement>(null);
     const textCenterRef = useRef<HTMLDivElement>(null);
     const marginVideoRef = useRef<HTMLVideoElement>(null);
     const marginGifRef = useRef<HTMLImageElement>(null);
@@ -54,11 +59,7 @@ const Home: React.FC = () => {
     useEffect(() => {
         document.title = 'Below Ground Ink | Custom Tattoo Studio in Kane, PA';
 
-        // Initial page load animation for header (slide in from top)
-        gsap.fromTo("#global-header",
-            { y: -100, opacity: 0 },
-            { y: 0, opacity: 1, duration: 2, delay: 1, ease: "power3.out" }
-        );
+        // Header animation moved to Layout.tsx to sync with Preloader
 
         // Removed old intro pinning since it's now fixed
         const st = { kill: () => { } }; // Dummy to avoid breaking cleanup
@@ -82,20 +83,20 @@ const Home: React.FC = () => {
             }
         });
 
-        // Smoothly fade out the poster AND the margin media as user scrolls down the intro
+        // Smoothly fade out the logo, text, and buttons as user scrolls down
         const fadeTargets = [
             textCenterRef.current,
+            logoRef.current,
             marginVideoRef.current,
             marginGifRef.current,
         ].filter(Boolean);
         const fadeAnimation = gsap.to(fadeTargets, {
             autoAlpha: 0,
-            y: -50,
-            scale: 0.95,
+            y: -30,
             scrollTrigger: {
                 trigger: "body",
                 start: "0% top",
-                end: "500px top",
+                end: "400px top",
                 scrub: true,
             }
         });
@@ -150,60 +151,43 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <div className="w-full flex flex-col">
-            <div className="relative lg:fixed left-0 right-0 z-0 pointer-events-none flex items-center justify-center min-h-[90vh] lg:min-h-0 lg:top-[98px] lg:bottom-1" ref={introRef}>
-                {/* Left margin video */}
-                <video
-                    ref={marginVideoRef}
-                    src="/tattoo2.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="absolute left-0 top-0 h-full w-auto object-cover opacity-60 mix-blend-luminosity"
-                    style={{ maxWidth: 'calc((100vw - 56rem) / 2)', minWidth: 80 }}
-                />
-                {/* Right margin gif */}
-                <img
-                    ref={marginGifRef}
-                    src="/tattoo1.gif"
-                    alt=""
-                    aria-hidden="true"
-                    className="absolute right-0 top-0 h-full w-auto object-cover opacity-60 mix-blend-luminosity"
-                    style={{ maxWidth: 'calc((100vw - 56rem) / 2)', minWidth: 80 }}
-                />
-                <div className="w-full h-full">
-                    <div className="text-align-center" ref={textCenterRef}>
-                        {/* The old Hero Poster content exactly as it was, but without max-w-6xl container directly framing it */}
-                        <div className="max-w-6xl mx-auto py-12 px-4 h-full flex flex-col justify-center relative pointer-events-auto">
-                            <section className="relative group w-full max-w-4xl mx-auto shadow-2xl -translate-y-12">
-                                <div className="absolute -inset-4 border-8 border-grunge-black -rotate-1 group-hover:rotate-0 transition-transform duration-500" />
-                                <div className="relative bg-grunge-black py-24 md:py-28 px-10 md:px-20 space-y-8 text-center rotate-1 group-hover:rotate-0 transition-transform duration-500 overflow-hidden">
-                                    <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]" />
+        <div className="relative min-h-screen">
+            {/* Logo Layer (Background - Frozen Final Preloader Frame) */}
+            <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
+                <div className="w-[95vw] max-w-7xl aspect-video flex items-center justify-center">
+                    <img
+                        id="hero-logo-target"
+                        src="/Logo_White.png"
+                        alt="Logo Background"
+                        className="w-full h-full object-contain scale-110 md:scale-125"
+                    />
+                </div>
+            </div>
 
-                                    <div className="w-72 h-72 mx-auto flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative">
-                                        <img src="/Logo_White.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
-                                    </div>
+            {/* Content Layer (Foreground) */}
+            <div ref={heroContentRef} className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-6rem)] pt-64">
+                <div className="text-center space-y-12 translate-y-64">
+                    <div className="hero-stagger-item flex items-center justify-center gap-6 font-black uppercase italic tracking-[0.3em] text-lg md:text-2xl text-foreground/80">
+                        <span>EST. 1994</span>
+                        <div className="w-2 h-2 rounded-full bg-accent-primary" />
+                        <span>SUBTERRANEAN SESSIONS</span>
+                        <div className="w-2 h-2 rounded-full bg-accent-primary" />
+                        <span>NO REGRETS</span>
+                    </div>
 
-                                    <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-2 font-black uppercase italic text-lg md:text-xl text-accent-primary">
-                                        <span>EST. 1994</span>
-                                        <div className="w-4 h-4 rounded-full bg-foreground hidden md:block" />
-                                        <span>SUBTERRANEAN SESSIONS</span>
-                                        <div className="w-4 h-4 rounded-full bg-foreground hidden md:block" />
-                                        <span>NO REGRETS</span>
-                                    </div>
-
-                                    <div className="flex flex-wrap justify-center gap-6 pt-4">
-                                        <Link to="/scheduling" className="px-6 py-2 border-4 border-accent-primary text-accent-primary font-black uppercase italic hover:bg-accent-primary hover:text-grunge-black transition-all rotate-[-1deg]">
-                                            GET INKED
-                                        </Link>
-                                        <Link to="/contact" className="px-6 py-2 border-4 border-foreground text-foreground font-black uppercase italic hover:bg-foreground hover:text-grunge-black transition-all rotate-[2deg]">
-                                            CONTACT US
-                                        </Link>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
+                    <div className="hero-stagger-item flex flex-col md:flex-row gap-6 justify-center pt-8">
+                        <Link
+                            to="/scheduling"
+                            className="bg-accent-primary text-grunge-black px-10 py-4 font-black uppercase italic tracking-tighter text-2xl hover:bg-grunge-black hover:text-accent-primary transition-all border-4 border-grunge-black rotate-[-2deg] active:rotate-0 flex items-center justify-center group shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                            Get Inked
+                        </Link>
+                        <Link
+                            to="/contact"
+                            className="bg-background text-foreground px-10 py-4 font-black uppercase italic tracking-tighter text-2xl hover:bg-grunge-black hover:text-accent-primary transition-all border-4 border-grunge-black rotate-[2deg] active:rotate-0 flex items-center justify-center group shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                        >
+                            Contact Us
+                        </Link>
                     </div>
                 </div>
             </div>

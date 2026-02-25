@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import GlassCard from './components/GlassCard';
-import { Skull, Zap, Send } from 'lucide-react';
+import { Zap, Send } from 'lucide-react';
 import type { ContactFields, ContactErrors } from './utils/sanitize';
 import {
     validateContactForm,
