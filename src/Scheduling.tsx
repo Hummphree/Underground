@@ -177,7 +177,7 @@ const Scheduling: React.FC = () => {
                                 </div>
                                 <div className="w-full bg-accent-primary/10 border-4 border-accent-primary/30 p-4 min-h-[64px] flex items-center">
                                     <span className="text-2xl font-black uppercase italic text-accent-primary tracking-tighter">
-                                        {selectedArtist || "NO ARTIST SELECTED [STAGE EMPTY]"}
+                                        {selectedArtist || "NO ARTIST SELECTED"}
                                     </span>
                                 </div>
                             </div>
@@ -185,7 +185,7 @@ const Scheduling: React.FC = () => {
                             {/* Name */}
                             <div className="space-y-1">
                                 <div className="flex justify-between items-center">
-                                    <label htmlFor="sched-name" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">IDENTIFICATION / NAME</label>
+                                    <label htmlFor="sched-name" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">NAME</label>
                                     <span className="text-[10px] font-black uppercase italic text-accent-primary opacity-40">[ REQUIRED ]</span>
                                 </div>
                                 <input
@@ -208,7 +208,7 @@ const Scheduling: React.FC = () => {
                             <div className="grid md:grid-cols-2 gap-8">
                                 <div className="space-y-1">
                                     <div className="flex justify-between items-center">
-                                        <label htmlFor="sched-email" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">TRANSMISSION / EMAIL</label>
+                                        <label htmlFor="sched-email" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">EMAIL</label>
                                         <span className="text-[10px] font-black uppercase italic text-accent-primary opacity-40">[ REQUIRED ]</span>
                                     </div>
                                     <input
@@ -228,7 +228,7 @@ const Scheduling: React.FC = () => {
                                 </div>
                                 <div className="space-y-1">
                                     <div className="flex justify-between items-center">
-                                        <label htmlFor="sched-phone" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">SIGNAL / PHONE</label>
+                                        <label htmlFor="sched-phone" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">PHONE</label>
                                         <span className="text-[10px] font-black uppercase italic text-accent-primary opacity-40">[ REQUIRED ]</span>
                                     </div>
                                     <input
@@ -251,7 +251,7 @@ const Scheduling: React.FC = () => {
                             {/* Description */}
                             <div className="space-y-1">
                                 <div className="flex justify-between items-center">
-                                    <label htmlFor="sched-description" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">THE VISION / DESCRIPTION</label>
+                                    <label htmlFor="sched-description" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">DESCRIPTION</label>
                                     <span className="text-[10px] font-black uppercase italic text-accent-primary opacity-40">[ REQUIRED ]</span>
                                 </div>
                                 <textarea
@@ -262,7 +262,7 @@ const Scheduling: React.FC = () => {
                                     onChange={handleChange}
                                     maxLength={2000}
                                     required
-                                    placeholder="DESCRIBE YOUR INK CONCEPT / STORY..."
+                                    placeholder="DESCRIBE YOUR INK CONCEPT / NEEDS..."
                                     aria-describedby={errors.description ? 'sched-desc-error' : undefined}
                                     className={`w-full bg-foreground/5 border-4 p-4 text-foreground font-black uppercase italic outline-none transition-colors resize-none ${errors.description ? 'border-red-500' : 'border-accent-primary/20 focus:border-accent-primary'}`}
                                 />
@@ -272,7 +272,7 @@ const Scheduling: React.FC = () => {
                             {/* File Upload */}
                             <div className="space-y-1">
                                 <div className="flex justify-between items-center">
-                                    <label htmlFor="sched-files" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">ASSET UPLOAD / REFERENCE IMAGES</label>
+                                    <label htmlFor="sched-files" className="text-accent-primary font-black uppercase italic tracking-widest text-sm">REFERENCE IMAGES</label>
                                     <span className="text-[10px] font-black uppercase italic text-foreground opacity-20">[ OPTIONAL ]</span>
                                 </div>
                                 <div className={`relative border-4 border-dashed p-8 text-center group hover:border-accent-primary transition-colors cursor-pointer ${errors.files ? 'border-red-500' : 'border-accent-primary/20'}`}>
@@ -339,12 +339,11 @@ const Scheduling: React.FC = () => {
                                 type="submit"
                                 className="w-full py-8 bg-accent-primary text-grunge-black font-black uppercase italic text-3xl tracking-tighter hover:scale-[1.02] active:scale-95 transition-all border-4 border-grunge-black shadow-[8px_8px_0px_0px_rgba(248,243,217,0.3)]"
                             >
-                                SUBMIT SET REQUEST
+                                BOOK NOW
                             </button>
 
                             <div className="pt-4 flex justify-between gap-4 font-black uppercase italic text-xs text-accent-primary/40 tracking-widest border-t border-accent-primary/10">
                                 <span>*ALL REQUESTS ARE FINAL</span>
-                                <span>[NO SELL OUTS]</span>
                             </div>
                         </form>
                     )}

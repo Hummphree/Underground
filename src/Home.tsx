@@ -48,6 +48,8 @@ const Home: React.FC = () => {
 
     const introRef = useRef<HTMLDivElement>(null);
     const textCenterRef = useRef<HTMLDivElement>(null);
+    const marginVideoRef = useRef<HTMLVideoElement>(null);
+    const marginGifRef = useRef<HTMLImageElement>(null);
 
     useEffect(() => {
         document.title = 'Below Ground Ink | Custom Tattoo Studio in Kane, PA';
@@ -80,9 +82,14 @@ const Home: React.FC = () => {
             }
         });
 
-        // Smoothly fade out ONLY the poster as user scrolls down the intro
-        const fadeAnimation = gsap.to(textCenterRef.current, {
-            opacity: 0,
+        // Smoothly fade out the poster AND the margin media as user scrolls down the intro
+        const fadeTargets = [
+            textCenterRef.current,
+            marginVideoRef.current,
+            marginGifRef.current,
+        ].filter(Boolean);
+        const fadeAnimation = gsap.to(fadeTargets, {
+            autoAlpha: 0,
             y: -50,
             scale: 0.95,
             scrollTrigger: {
@@ -144,21 +151,41 @@ const Home: React.FC = () => {
 
     return (
         <div className="w-full">
-            <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center pt-24" ref={introRef}>
+            <div className="fixed left-0 right-0 z-0 pointer-events-none flex items-center justify-center" style={{ top: '98px', bottom: '4px' }} ref={introRef}>
+                {/* Left margin video */}
+                <video
+                    ref={marginVideoRef}
+                    src="/tattoo2.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute left-0 top-0 h-full w-auto object-cover opacity-60 mix-blend-luminosity"
+                    style={{ maxWidth: 'calc((100vw - 56rem) / 2)', minWidth: 80 }}
+                />
+                {/* Right margin gif */}
+                <img
+                    ref={marginGifRef}
+                    src="/tattoo1.gif"
+                    alt=""
+                    aria-hidden="true"
+                    className="absolute right-0 top-0 h-full w-auto object-cover opacity-60 mix-blend-luminosity"
+                    style={{ maxWidth: 'calc((100vw - 56rem) / 2)', minWidth: 80 }}
+                />
                 <div className="w-full h-full">
                     <div className="text-align-center" ref={textCenterRef}>
                         {/* The old Hero Poster content exactly as it was, but without max-w-6xl container directly framing it */}
                         <div className="max-w-6xl mx-auto py-12 px-4 h-full flex flex-col justify-center relative pointer-events-auto">
-                            <section className="relative group w-full max-w-4xl mx-auto shadow-2xl">
+                            <section className="relative group w-full max-w-4xl mx-auto shadow-2xl -translate-y-12">
                                 <div className="absolute -inset-4 border-8 border-grunge-black -rotate-1 group-hover:rotate-0 transition-transform duration-500" />
-                                <div className="relative bg-grunge-black p-12 md:p-24 space-y-12 text-center rotate-1 group-hover:rotate-0 transition-transform duration-500 overflow-hidden cursor-crosshair">
+                                <div className="relative bg-grunge-black py-24 md:py-28 px-10 md:px-20 space-y-8 text-center rotate-1 group-hover:rotate-0 transition-transform duration-500 overflow-hidden">
                                     <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]" />
 
-                                    <div className="w-80 h-80 mx-auto flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative">
+                                    <div className="w-72 h-72 mx-auto flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative">
                                         <img src="/Logo_White.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
                                     </div>
 
-                                    <div className="flex flex-col md:flex-row items-center justify-center gap-8 pt-8 font-black uppercase italic text-xl md:text-2xl text-accent-primary">
+                                    <div className="flex flex-col md:flex-row items-center justify-center gap-6 pt-2 font-black uppercase italic text-lg md:text-xl text-accent-primary">
                                         <span>EST. 1994</span>
                                         <div className="w-4 h-4 rounded-full bg-foreground hidden md:block" />
                                         <span>SUBTERRANEAN SESSIONS</span>
@@ -166,12 +193,12 @@ const Home: React.FC = () => {
                                         <span>NO REGRETS</span>
                                     </div>
 
-                                    <div className="flex flex-wrap justify-center gap-6 pt-12">
-                                        <Link to="/scheduling" className="px-6 py-3 border-4 border-accent-primary text-accent-primary font-black uppercase italic hover:bg-accent-primary hover:text-grunge-black transition-all rotate-[-1deg]">
+                                    <div className="flex flex-wrap justify-center gap-6 pt-4">
+                                        <Link to="/scheduling" className="px-6 py-2 border-4 border-accent-primary text-accent-primary font-black uppercase italic hover:bg-accent-primary hover:text-grunge-black transition-all rotate-[-1deg]">
                                             GET INKED
                                         </Link>
-                                        <Link to="/contact" className="px-6 py-3 border-4 border-foreground text-foreground font-black uppercase italic hover:bg-foreground hover:text-grunge-black transition-all rotate-[2deg]">
-                                            THE MANIFESTO
+                                        <Link to="/contact" className="px-6 py-2 border-4 border-foreground text-foreground font-black uppercase italic hover:bg-foreground hover:text-grunge-black transition-all rotate-[2deg]">
+                                            CONTACT US
                                         </Link>
                                     </div>
                                 </div>
@@ -181,7 +208,7 @@ const Home: React.FC = () => {
                 </div>
             </div>
 
-            <section id="frontline" className="section_tabs pb-[500px]">
+            <section id="frontline" className="section_tabs">
                 <div className="padding-section-large">
                     <div className="tabs_container">
                         <div className="tabs_height">
@@ -229,10 +256,10 @@ const Home: React.FC = () => {
                                                     ))}
                                                 </div>
 
-                                                <p className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase">MEET THE ARTISTS →</p>
+                                                <a href="#about" className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase hover:text-accent-primary transition-colors cursor-pointer w-max mx-auto md:mx-0">MEET THE ARTISTS →</a>
                                             </div>
                                             {/* Tab 2 Left */}
-                                            <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6">
+                                            <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black bg-accent-primary shadow-hard rounded-[var(--border-radius--medium)] p-6">
                                                 <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 -rotate-2 inline-block mt-12 mb-8 shadow-hard-sm">
                                                     LATEST CUTS
                                                 </h2>
@@ -262,24 +289,24 @@ const Home: React.FC = () => {
                                             </div>
 
                                             {/* Tab 2 Right - Image Marquee */}
-                                            <div className="tabs_video flex items-center justify-center p-4 custom-scrollbar border-4 border-grunge-black overflow-hidden bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--medium)]">
-                                                <div className="w-full overflow-hidden border-y-8 border-grunge-black bg-grunge-black py-12 relative shadow-2xl h-max -rotate-2 scale-105">
-                                                    <div className="flex animate-marquee gap-8 px-4 h-full items-center">
+                                            <div className="tabs_video border-4 border-grunge-black overflow-hidden rounded-[var(--border-radius--medium)] flex items-center" style={{ background: 'var(--color-grunge-black, #1a1a1a)' }}>
+                                                <div className="w-full overflow-hidden bg-grunge-black relative -rotate-2 scale-110 py-10 pointer-events-none">
+                                                    <div className="flex animate-marquee gap-8 px-4 h-full items-center pointer-events-auto">
                                                         {shuffledPortfolio.map((item, i) => (
-                                                            <div key={i} className="w-72 h-80 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group overflow-hidden">
+                                                            <div key={i} className="w-72 h-80 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group/card overflow-hidden">
                                                                 <img src={`https://picsum.photos/seed/${item.seed}/288/320`} alt={`${item.artist} - Tattoo ${i + 1}`} className="w-full h-full object-cover" />
-                                                                <div className="absolute inset-0 bg-accent-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-grunge-black/80 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                                                                <div className="absolute inset-0 bg-accent-primary/10 group-hover/card:bg-transparent transition-colors z-10" />
+                                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-grunge-black/80 backdrop-blur-sm translate-y-full group-hover/card:translate-y-0 transition-transform duration-300 z-20">
                                                                     <p className="font-black uppercase italic text-accent-primary text-xs tracking-widest truncate">{item.artist}</p>
                                                                 </div>
                                                             </div>
                                                         ))}
                                                         {/* Duplicate for seamless loop */}
                                                         {shuffledPortfolio.map((item, i) => (
-                                                            <div key={`dup-${i}`} className="w-72 h-80 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group overflow-hidden">
+                                                            <div key={`dup-${i}`} className="w-72 h-80 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group/card overflow-hidden">
                                                                 <img src={`https://picsum.photos/seed/${item.seed}/288/320`} alt={`${item.artist} - Tattoo ${i + 1}`} className="w-full h-full object-cover" />
-                                                                <div className="absolute inset-0 bg-accent-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-grunge-black/80 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                                                                <div className="absolute inset-0 bg-accent-primary/10 group-hover/card:bg-transparent transition-colors z-10" />
+                                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-grunge-black/80 backdrop-blur-sm translate-y-full group-hover/card:translate-y-0 transition-transform duration-300 z-20">
                                                                     <p className="font-black uppercase italic text-accent-primary text-xs tracking-widest truncate">{item.artist}</p>
                                                                 </div>
                                                             </div>
@@ -312,9 +339,9 @@ const Home: React.FC = () => {
                                                                             {event.location}
                                                                         </p>
                                                                     </div>
-                                                                    <div className="px-6 py-3 border-4 border-grunge-black text-grunge-black font-black uppercase italic hover:bg-grunge-black hover:text-foreground transition-all cursor-pointer text-center w-full md:w-max">
+                                                                    <Link to="/events" className="px-6 py-3 border-4 border-grunge-black text-grunge-black font-black uppercase italic hover:bg-grunge-black hover:text-foreground transition-all cursor-pointer text-center w-full md:w-max">
                                                                         SECURE ACCESS
-                                                                    </div>
+                                                                    </Link>
                                                                 </div>
                                                             ))}
                                                         </div>
@@ -331,7 +358,7 @@ const Home: React.FC = () => {
             </section>
 
             {/* About */}
-            <section className="py-16 px-6 md:px-16 bg-background border-t-4 border-grunge-black">
+            <section id="about" className="py-16 px-6 md:px-16 bg-background border-t-4 border-grunge-black relative z-20">
                 {/* Blurb */}
                 <p className="text-foreground/60 italic font-semibold text-base leading-relaxed max-w-2xl mx-auto text-center mb-14">
                     Below Ground Ink is a custom tattoo studio in <span className="text-accent-primary not-italic font-black">Kane, Pennsylvania</span> —

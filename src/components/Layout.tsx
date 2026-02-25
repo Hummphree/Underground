@@ -1,5 +1,6 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Instagram, MapPin, Clock } from 'lucide-react';
+import GooeyMenu from './GooeyMenu';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -13,22 +14,39 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className="min-h-screen bg-background selection:bg-accent-primary selection:text-grunge-black">
             <div className="relative z-10 flex flex-col min-h-screen">
-                <header id="global-header" className="h-24 flex items-center justify-between px-8 border-b-8 border-grunge-black bg-accent-primary sticky top-0 z-[100]">
-                    <div className="flex items-center gap-6">
-                        <Link to="/" className="flex items-center gap-3 group relative">
-                            <div className="w-28 h-28 flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative">
-                                <div className="ink-explosion-overlay" />
-                                <img src="/Logo.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
-                            </div>
-                        </Link>
+                <header id="global-header" className="h-24 flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] px-4 md:px-8 border-b-8 border-grunge-black bg-accent-primary sticky top-0 z-[100] overflow-visible">
+                    {/* Desktop: GooeyMenu on Left, Nav on right (near logo) */}
+                    <div className="hidden md:flex justify-between items-center w-full h-full">
+                        <div className="relative z-[200]">
+                            <GooeyMenu origin="left" />
+                        </div>
+                        <nav className="flex justify-end gap-2 xl:gap-4 pr-2 xl:pr-6">
+                            <Link to="/events" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Events</Link>
+                            <Link to="/#frontline" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Meet the Artists</Link>
+                        </nav>
                     </div>
-                    <nav className="hidden md:flex gap-4">
-                        <Link to="/events" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Events</Link>
-                        <Link to="/#frontline" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors rotate-1">Meet the Artists</Link>
-                        <Link to="/aftercare" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors rotate-1">Aftercare</Link>
-                        <Link to="/scheduling" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Schedule Now</Link>
-                        <Link to="/contact" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Contact</Link>
-                    </nav>
+
+                    {/* Logo: Snaps left on mobile, centers on desktop */}
+                    <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-start md:justify-center group relative md:col-start-2">
+                        <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative md:pb-3">
+                            <div className="ink-explosion-overlay" />
+                            <img src="/Logo.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
+                        </div>
+                    </Link>
+
+                    {/* Mobile: GooeyMenu on the Right */}
+                    <div className="flex md:hidden justify-end relative z-[200]">
+                        <GooeyMenu origin="right" />
+                    </div>
+
+                    {/* Desktop: Right Nav */}
+                    <div className="hidden md:flex justify-start items-center w-full h-full">
+                        <nav className="flex justify-start gap-2 xl:gap-4 pl-2 xl:pl-6">
+                            <Link to="/aftercare" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Aftercare</Link>
+                            <Link to="/scheduling" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Schedule Now</Link>
+                            <Link to="/contact" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Contact</Link>
+                        </nav>
+                    </div>
                 </header>
 
                 {!isHome && (

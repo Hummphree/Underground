@@ -1,0 +1,225 @@
+/* GooeyMenu.css */
+:root {
+    --gooey-speed: 0.85s;
+    --gooey-ease: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.gooey-menu-wrapper {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    z-index: 200;
+}
+
+.gooey-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.gooey-menu__toggle {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    z-index: 10;
+    margin: 0;
+}
+
+.gooey-menu__toggle-label {
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    display: block;
+    --clip: circle(0% at top left);
+    -webkit-clip-path: var(--clip);
+    clip-path: var(--clip);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    transition: backdrop-filter var(--gooey-speed) var(--gooey-ease),
+        clip-path 0s,
+        -webkit-clip-path 0s;
+    z-index: 105;
+}
+
+.gooey-menu-wrapper.right .gooey-menu__toggle-label {
+    --clip: circle(0% at top right);
+}
+
+.gooey-menu__toggle:checked~.gooey-menu__toggle-label:not(.gooey-menu__toggle-label--closer) {
+    /* Using 150% to ensure it covers even long screens */
+    --clip: circle(150% at top left);
+    pointer-events: auto;
+    backdrop-filter: blur(10px);
+    background-color: rgba(80, 75, 56, 0.8);
+}
+
+.gooey-menu-wrapper.right .gooey-menu__toggle:checked~.gooey-menu__toggle-label:not(.gooey-menu__toggle-label--closer) {
+    --clip: circle(150% at top right);
+}
+
+.gooey-menu__toggle-label--closer {
+    z-index: 110;
+    pointer-events: auto;
+    cursor: pointer;
+    --clip: none;
+    clip-path: none;
+    -webkit-clip-path: none;
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gooey-menu-wrapper.right .gooey-menu__toggle-label--closer {
+    right: 0;
+    left: auto;
+}
+
+.gooey-menu__icon {
+    --scale: 1;
+    height: 32px;
+    width: 32px;
+    position: absolute;
+    fill: var(--color-foreground);
+    /* Use CSS drop-shadow to match existing grunge aesthetic */
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+    transform: scale(var(--scale, 1));
+    transition: all var(--gooey-speed) var(--gooey-ease);
+}
+
+.gooey-menu__icon:nth-of-type(2) {
+    --scale: 0;
+}
+
+.gooey-menu__toggle:checked~.gooey-menu__toggle-label--closer .gooey-menu__icon:nth-of-type(1) {
+    --scale: 0;
+}
+
+.gooey-menu__toggle:checked~.gooey-menu__toggle-label--closer .gooey-menu__icon:nth-of-type(2) {
+    --scale: 1;
+}
+
+.gooey-menu__container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 106;
+}
+
+.gooey-menu__toggle:checked~.gooey-menu__container {
+    pointer-events: auto;
+}
+
+.gooey-menu__content {
+    margin: 0;
+    padding: 0;
+    display: block;
+    list-style-type: none;
+    filter: url("#goo") drop-shadow(4px 4px 0px #1a1a1a);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+.gooey-menu__content::after {
+    /* To use color-accent-primary, we make sure it acts as base for goo */
+    background: var(--color-accent-primary);
+    content: '';
+    border-radius: 50%;
+    position: absolute;
+    height: 160px;
+    width: 160px;
+    top: -80px;
+    left: -80px;
+    transform: scale(0);
+    transition: transform var(--gooey-speed) var(--gooey-ease);
+}
+
+.gooey-menu-wrapper.right .gooey-menu__content::after {
+    left: auto;
+    right: -80px;
+}
+
+.gooey-menu__toggle:checked~.gooey-menu__container .gooey-menu__content::after {
+    transform: scale(1.5);
+}
+
+.gooey-menu__item {
+    background: var(--color-accent-primary);
+    border-radius: 50%;
+    /* No outer border or box shadow because the SVG filter breaks it. */
+    cursor: pointer;
+    display: flex;
+    height: clamp(80px, 15vmin, 150px);
+    width: clamp(80px, 15vmin, 150px);
+    place-items: center;
+    position: absolute;
+    text-align: center;
+    top: -20px;
+    left: -20px;
+    transform: translate(-50%, -50%) scale(0);
+    transition: all var(--gooey-speed) calc(var(--delay, 0) * 1s) var(--gooey-ease);
+}
+
+.gooey-menu-wrapper.right .gooey-menu__item {
+    left: auto;
+    right: -20px;
+    transform: translate(50%, -50%) scale(0);
+}
+
+.gooey-menu__toggle:checked~.gooey-menu__container .gooey-menu__item {
+    top: calc(var(--y) * 1vh);
+    left: calc(var(--x) * 1vw);
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.gooey-menu-wrapper.right .gooey-menu__toggle:checked~.gooey-menu__container .gooey-menu__item {
+    left: auto;
+    right: calc((100 - var(--x)) * 1vw);
+    transform: translate(50%, -50%) scale(1);
+}
+
+.gooey-menu__link {
+    align-items: center;
+    color: var(--color-grunge-black);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 900;
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem;
+    height: 100%;
+    width: 100%;
+    transition: background-color 0.2s;
+}
+
+@media(min-width: 768px) {
+    .gooey-menu__link {
+        font-size: 1.25rem;
+        padding: 1rem;
+    }
+}
+
+.gooey-menu__link:hover {
+    text-decoration: underline;
+}
