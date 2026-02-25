@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Instagram, MapPin, Clock } from 'lucide-react';
+import { ArrowLeft, Instagram, MapPin, Clock, VolumeX, Volume2 } from 'lucide-react';
 import GooeyMenu from './GooeyMenu';
 
 interface LayoutProps {
@@ -14,6 +14,18 @@ const Layout: React.FC<LayoutProps> = ({ children, isTransitionStarted }) => {
     const location = useLocation();
     const isHome = location.pathname === '/';
 
+    const [isMuted, setIsMuted] = useState(true); // Default matching autoPlay muted videos
+
+    useEffect(() => {
+        // Find all media elements and update their muted property
+        const mediaElements = document.querySelectorAll('video, audio');
+        mediaElements.forEach((media: any) => {
+            media.muted = isMuted;
+        });
+    }, [isMuted]);
+
+    const toggleMute = () => setIsMuted(prev => !prev);
+
     useEffect(() => {
         if (isTransitionStarted) {
             // Header entrance animation synced with Preloader finish
@@ -24,41 +36,127 @@ const Layout: React.FC<LayoutProps> = ({ children, isTransitionStarted }) => {
         }
     }, [isTransitionStarted]);
 
+    const [headerFramesLoaded, setHeaderFramesLoaded] = useState(false);
+    const headerImgRef = useRef<HTMLImageElement>(null);
+    const headerSequenceRef = useRef<gsap.core.Timeline | null>(null);
+
+    const headerFrames = React.useMemo(() => {
+        const sequence = [];
+        for (let i = 14; i <= 25.5; i += 0.5) {
+            sequence.push(`/assets/header_animation/Frame${i}.PNG`);
+        }
+        sequence.push(`/assets/header_animation/Frame26.PNG`);
+        return sequence;
+    }, []);
+
+    useEffect(() => {
+        const preloadHeaders = async () => {
+            const promises = headerFrames.map((src) => {
+                return new Promise((resolve) => {
+                    const img = new Image();
+                    img.src = src;
+                    img.onload = () => resolve(null);
+                    img.onerror = () => resolve(null); // Continue even if some fail
+                });
+            });
+            await Promise.all(promises);
+            setHeaderFramesLoaded(true);
+        };
+        preloadHeaders();
+    }, [headerFrames]);
+
+    const playHeaderAnimation = () => {
+        if (!headerFramesLoaded || !headerImgRef.current) return;
+
+        // Kill existing animation if any
+        if (headerSequenceRef.current) headerSequenceRef.current.kill();
+
+        const playhead = { frame: 0 };
+        headerSequenceRef.current = gsap.timeline();
+        headerSequenceRef.current.to(playhead, {
+            frame: headerFrames.length - 1,
+            snap: "frame",
+            duration: 1.0,
+            ease: "none",
+            onUpdate: () => {
+                if (headerImgRef.current) {
+                    headerImgRef.current.src = headerFrames[Math.floor(playhead.frame)];
+                }
+            }
+        });
+    };
+
+    const resetHeaderAnimation = () => {
+        if (headerSequenceRef.current) {
+            headerSequenceRef.current.kill();
+        }
+        if (headerImgRef.current) {
+            headerImgRef.current.src = "/Logo.png";
+        }
+    };
+
     return (
         <div className="min-h-screen bg-background selection:bg-accent-primary selection:text-grunge-black">
             <div className="relative z-10 flex flex-col min-h-screen">
                 <header id="global-header" className="h-24 flex items-center justify-between md:grid md:grid-cols-[1fr_auto_1fr] px-4 md:px-8 border-b-8 border-grunge-black bg-accent-primary sticky top-0 z-[100] overflow-visible">
+
+                    {/* MOBILE LEFT: Mute Button */}
+                    <div className="flex md:hidden justify-start relative z-[200] w-12">
+                        <button onClick={toggleMute} className="w-12 h-12 bg-grunge-black rounded-full flex items-center justify-center" aria-label="Toggle Mute">
+                            {isMuted ? <VolumeX className="text-foreground w-6 h-6 stroke-[2.5]" /> : <Volume2 className="text-foreground w-6 h-6 stroke-[2.5]" />}
+                        </button>
+                    </div>
+
                     {/* Desktop: GooeyMenu on Left, Nav on right (near logo) */}
                     <div className="hidden md:flex justify-between items-center w-full h-full">
                         <div className="relative z-[200]">
                             <GooeyMenu origin="left" />
                         </div>
                         <nav className="flex justify-end gap-2 xl:gap-4 pr-2 xl:pr-6">
-                            <Link to="/events" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Events</Link>
-                            <Link to="/#frontline" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Meet the Artists</Link>
+                            <Link to="/events" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Events</Link>
+                            <Link to="/#about" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">About</Link>
+                            <Link to="/#frontline" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Portfolio</Link>
                         </nav>
                     </div>
 
-                    {/* Logo: Snaps left on mobile, centers on desktop */}
-                    <Link to="/" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="flex items-center justify-start md:justify-center group relative md:col-start-2">
-                        <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative md:pb-3">
-                            <div className="ink-explosion-overlay" />
-                            <img id="header-logo-target" src="/Logo.png" alt="Below Ground Ink" className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300" />
+                    {/* Logo: Snaps center on mobile and desktop */}
+                    <Link
+                        to="/"
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                        onMouseEnter={playHeaderAnimation}
+                        onMouseLeave={resetHeaderAnimation}
+                        className="flex items-center justify-center group relative md:col-start-2"
+                    >
+                        <div className="w-20 h-20 md:w-28 md:h-28 flex items-center justify-center overflow-hidden shrink-0 relative md:pb-3">
+                            <img
+                                ref={headerImgRef}
+                                id="header-logo-target"
+                                src="/Logo.png"
+                                alt="Below Ground Ink"
+                                className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-300"
+                            />
                         </div>
                     </Link>
 
                     {/* Mobile: GooeyMenu on the Right */}
-                    <div className="flex md:hidden justify-end relative z-[200]">
+                    <div className="flex md:hidden justify-end relative z-[200] w-12">
                         <GooeyMenu origin="right" />
                     </div>
 
-                    {/* Desktop: Right Nav */}
-                    <div className="hidden md:flex justify-start items-center w-full h-full">
+                    {/* Desktop: Right Nav and Mute Button */}
+                    <div className="hidden md:flex justify-between items-center w-full h-full">
                         <nav className="flex justify-start gap-2 xl:gap-4 pl-2 xl:pl-6">
-                            <Link to="/aftercare" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Aftercare</Link>
-                            <Link to="/scheduling" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Schedule Now</Link>
-                            <Link to="/contact" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] text-xs lg:text-sm xl:text-base whitespace-nowrap">Contact</Link>
+                            <Link to="/aftercare" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Aftercare</Link>
+                            <Link to="/scheduling" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Schedule</Link>
+                            <Link to="/contact" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Contact</Link>
                         </nav>
+
+                        {/* DESKTOP RIGHT: Mute Button */}
+                        <div className="relative z-[200] ml-4">
+                            <button onClick={toggleMute} className="w-12 h-12 bg-grunge-black rounded-full flex items-center justify-center hover:scale-105 transition-transform" aria-label="Toggle Mute">
+                                {isMuted ? <VolumeX className="text-foreground w-6 h-6 stroke-[2.5]" /> : <Volume2 className="text-foreground w-6 h-6 stroke-[2.5]" />}
+                            </button>
+                        </div>
                     </div>
                 </header>
 
@@ -96,7 +194,8 @@ const Layout: React.FC<LayoutProps> = ({ children, isTransitionStarted }) => {
                         <div className="flex flex-col gap-4 text-center md:text-right">
                             <h3 className="font-black uppercase italic tracking-widest text-accent-primary text-xl mb-2">Navigate</h3>
                             <Link to="/events" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Events</Link>
-                            <Link to="/#frontline" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Meet the Artists</Link>
+                            <Link to="/#frontline" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Portfolio</Link>
+                            <Link to="/#about" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">About</Link>
                             <Link to="/scheduling" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Schedule Now</Link>
                             <Link to="/aftercare" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Aftercare</Link>
                         </div>

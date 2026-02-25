@@ -14,18 +14,20 @@ const GooeyMenu: React.FC<GooeyMenuProps> = ({ origin }) => {
     // [x(vw), y(vh)]
     const positions = {
         left: [
-            { x: 25, y: 30 },
-            { x: 50, y: 25 },
-            { x: 75, y: 30 },
-            { x: 35, y: 60 },
-            { x: 65, y: 60 },
+            { x: 20, y: 30 },
+            { x: 50, y: 20 },
+            { x: 80, y: 30 },
+            { x: 25, y: 60 },
+            { x: 50, y: 70 },
+            { x: 75, y: 60 },
         ],
         right: [
-            { x: 75, y: 30 }, // Inverted for right side
-            { x: 50, y: 25 },
-            { x: 25, y: 30 },
-            { x: 65, y: 60 },
-            { x: 35, y: 60 },
+            { x: 80, y: 30 },
+            { x: 50, y: 20 },
+            { x: 20, y: 30 },
+            { x: 75, y: 60 },
+            { x: 50, y: 70 },
+            { x: 25, y: 60 },
         ]
     };
 
@@ -46,14 +48,14 @@ const GooeyMenu: React.FC<GooeyMenuProps> = ({ origin }) => {
                 <label htmlFor={`menu-toggle-${origin}`} className="gooey-menu__toggle-label"></label>
 
                 {/* The actual button */}
-                <label htmlFor={`menu-toggle-${origin}`} className="gooey-menu__toggle-label gooey-menu__toggle-label--closer">
-                    <svg className="gooey-menu__icon" preserveAspectRatio="xMinYMin" viewBox="0 0 24 24">
+                <label htmlFor={`menu-toggle-${origin}`} className="gooey-menu__toggle-label gooey-menu__toggle-label--closer bg-grunge-black rounded-full">
+                    <svg className="gooey-menu__icon text-foreground" preserveAspectRatio="xMinYMin" viewBox="0 0 24 24">
                         {/* Hamburger icon */}
-                        <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" />
+                        <path d="M3,6H21V8H3V6M3,11H21V13H3V11M3,16H21V18H3V16Z" fill="currentColor" />
                     </svg>
-                    <svg className="gooey-menu__icon" preserveAspectRatio="xMinYMin" viewBox="0 0 24 24">
+                    <svg className="gooey-menu__icon text-foreground" preserveAspectRatio="xMinYMin" viewBox="0 0 24 24">
                         {/* Close (X) icon */}
-                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+                        <path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" fill="currentColor" />
                     </svg>
                 </label>
 
@@ -62,16 +64,19 @@ const GooeyMenu: React.FC<GooeyMenuProps> = ({ origin }) => {
                         <li className="gooey-menu__item" style={{ '--delay': '0.1', '--x': currentPositions[0].x, '--y': currentPositions[0].y } as React.CSSProperties}>
                             <Link to="/events" className="gooey-menu__link" onClick={closeMenu}>EVENTS</Link>
                         </li>
-                        <li className="gooey-menu__item" style={{ '--delay': '0.2', '--x': currentPositions[1].x, '--y': currentPositions[1].y } as React.CSSProperties}>
-                            <Link to="/#frontline" className="gooey-menu__link" onClick={closeMenu}>ARTISTS</Link>
+                        <li className="gooey-menu__item" style={{ '--delay': '0.15', '--x': currentPositions[1].x, '--y': currentPositions[1].y } as React.CSSProperties}>
+                            <Link to="/#about" className="gooey-menu__link" onClick={closeMenu}>ABOUT</Link>
                         </li>
-                        <li className="gooey-menu__item" style={{ '--delay': '0.3', '--x': currentPositions[2].x, '--y': currentPositions[2].y } as React.CSSProperties}>
+                        <li className="gooey-menu__item" style={{ '--delay': '0.2', '--x': currentPositions[2].x, '--y': currentPositions[2].y } as React.CSSProperties}>
+                            <Link to="/#frontline" className="gooey-menu__link" onClick={closeMenu}>PORTFOLIO</Link>
+                        </li>
+                        <li className="gooey-menu__item" style={{ '--delay': '0.3', '--x': currentPositions[3].x, '--y': currentPositions[3].y } as React.CSSProperties}>
                             <Link to="/scheduling" className="gooey-menu__link" onClick={closeMenu}>BOOK</Link>
                         </li>
-                        <li className="gooey-menu__item" style={{ '--delay': '0.4', '--x': currentPositions[3].x, '--y': currentPositions[3].y } as React.CSSProperties}>
+                        <li className="gooey-menu__item" style={{ '--delay': '0.4', '--x': currentPositions[4].x, '--y': currentPositions[4].y } as React.CSSProperties}>
                             <Link to="/aftercare" className="gooey-menu__link" onClick={closeMenu}>AFTERCARE</Link>
                         </li>
-                        <li className="gooey-menu__item" style={{ '--delay': '0.5', '--x': currentPositions[4].x, '--y': currentPositions[4].y } as React.CSSProperties}>
+                        <li className="gooey-menu__item" style={{ '--delay': '0.5', '--x': currentPositions[5].x, '--y': currentPositions[5].y } as React.CSSProperties}>
                             <Link to="/contact" className="gooey-menu__link" onClick={closeMenu}>CONTACT</Link>
                         </li>
                     </ul>

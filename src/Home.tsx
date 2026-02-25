@@ -27,11 +27,11 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
         },
         {
             id: "2",
-            name: "Vex Thorne",
-            role: "RESIDENT ARTIST",
-            specialty: "NEO-TRADITIONAL GOTHIC",
-            bio: "Bridging the gap between classical illustration and aggressive street art. Vex specializes in high-contrast floral and anatomical pieces.",
-            photo: "https://picsum.photos/seed/vex-thorne-artist/600/400",
+            name: "Megan Rohr",
+            role: "apprentice",
+            specialty: "BIOMECHANICAL SURREALISM",
+            bio: "Building strange and vivid worlds through biomechanical surrealism. Every session is a dive into the unknown.",
+            photo: "https://picsum.photos/seed/megan-rohr-artist/600/400",
         }
     ];
 
@@ -55,6 +55,7 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
     const textCenterRef = useRef<HTMLDivElement>(null);
     const marginVideoRef = useRef<HTMLVideoElement>(null);
     const marginGifRef = useRef<HTMLImageElement>(null);
+    const heroVideoRef = useRef<HTMLVideoElement>(null);
 
     useEffect(() => {
         document.title = 'Below Ground Ink | Custom Tattoo Studio in Kane, PA';
@@ -85,8 +86,9 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
 
         // Smoothly fade out the logo, text, and buttons as user scrolls down
         const fadeTargets = [
-            textCenterRef.current,
             logoRef.current,
+            textCenterRef.current,
+            heroVideoRef.current,
             marginVideoRef.current,
             marginGifRef.current,
         ].filter(Boolean);
@@ -154,7 +156,17 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
         <div className="relative min-h-screen">
             {/* Logo Layer (Background - Frozen Final Preloader Frame) */}
             <div className="fixed inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
-                <div className="w-[95vw] max-w-7xl aspect-video flex items-center justify-center">
+                <video
+                    ref={heroVideoRef}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover z-0 opacity-40"
+                >
+                    <source src="/tour.mp4" type="video/mp4" />
+                </video>
+                <div ref={logoRef} className="w-[95vw] max-w-7xl aspect-video flex items-center justify-center z-10 relative">
                     <img
                         id="hero-logo-target"
                         src="/Logo_White.png"
@@ -162,34 +174,27 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
                         className="w-full h-full object-contain scale-110 md:scale-125"
                     />
                 </div>
-            </div>
 
-            {/* Content Layer (Foreground) */}
-            <div ref={heroContentRef} className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-6rem)] pt-64">
-                <div className="text-center space-y-12 translate-y-64">
-                    <div className="hero-stagger-item flex items-center justify-center gap-6 font-black uppercase italic tracking-[0.3em] text-lg md:text-2xl text-foreground/80">
-                        <span>EST. 1994</span>
-                        <div className="w-2 h-2 rounded-full bg-accent-primary" />
-                        <span>SUBTERRANEAN SESSIONS</span>
-                        <div className="w-2 h-2 rounded-full bg-accent-primary" />
-                        <span>NO REGRETS</span>
-                    </div>
-
-                    <div className="hero-stagger-item flex flex-col md:flex-row gap-6 justify-center pt-8">
+                <div ref={textCenterRef} className="absolute text-center space-y-12 translate-y-[389px] md:translate-y-[325px] pointer-events-auto z-20">
+                    <div className="hero-stagger-item flex flex-col md:flex-row gap-4 md:gap-6 justify-center">
                         <Link
                             to="/scheduling"
-                            className="bg-accent-primary text-grunge-black px-10 py-4 font-black uppercase italic tracking-tighter text-2xl hover:bg-grunge-black hover:text-accent-primary transition-all border-4 border-grunge-black rotate-[-2deg] active:rotate-0 flex items-center justify-center group shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                            className="bg-accent-primary text-grunge-black px-6 py-3 md:px-8 md:py-3 font-black uppercase italic tracking-tighter text-lg md:text-xl hover:bg-grunge-black hover:text-accent-primary transition-all border-4 border-grunge-black rotate-[-2deg] active:rotate-0 flex items-center justify-center group shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
                         >
                             Get Inked
                         </Link>
                         <Link
                             to="/contact"
-                            className="bg-background text-foreground px-10 py-4 font-black uppercase italic tracking-tighter text-2xl hover:bg-grunge-black hover:text-accent-primary transition-all border-4 border-grunge-black rotate-[2deg] active:rotate-0 flex items-center justify-center group shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                            className="bg-background text-foreground px-6 py-3 md:px-8 md:py-3 font-black uppercase italic tracking-tighter text-lg md:text-xl hover:bg-grunge-black hover:text-accent-primary transition-all border-4 border-grunge-black rotate-[2deg] active:rotate-0 flex items-center justify-center group shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
                         >
                             Contact Us
                         </Link>
                     </div>
                 </div>
+            </div>
+
+            {/* Content Layer (Foreground) */}
+            <div ref={heroContentRef} className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-6rem)] pt-64 pointer-events-none">
             </div>
 
             <section id="frontline" className="section_tabs">
@@ -202,45 +207,26 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
                                         <div className="tabs_left-top w-full h-full relative">
                                             {/* Tab 1 Left */}
                                             <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6 gap-0">
-                                                <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 rotate-1 inline-block mt-8 mb-6 shadow-hard-sm">
-                                                    THE FRONT LINE
+                                                <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-2 py-2 rotate-1 inline-block mt-8 mb-1 shadow-hard-sm">
+                                                    Portfolio
                                                 </h2>
-
-                                                {/* Studio stats */}
-                                                <div className="grid grid-cols-3 gap-3 mb-6 w-full">
-                                                    {[
-                                                        { num: '10+', label: 'YRS RUNNING' },
-                                                        { num: '2', label: 'ARTISTS' },
-                                                        { num: '100%', label: 'CUSTOM' },
-                                                    ].map(({ num, label }) => (
-                                                        <div key={label} className="border-2 border-accent-primary/40 bg-background/10 py-3 text-center">
-                                                            <p className="text-accent-primary font-black text-2xl italic leading-none">{num}</p>
-                                                            <p className="text-foreground/50 font-bold uppercase text-[0.6rem] tracking-widest mt-1">{label}</p>
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-                                                <div className="tabs_line w-1/2 mx-auto mb-6"></div>
-
-                                                {/* Tagline */}
-                                                <p className="text-foreground/70 italic font-semibold text-sm leading-relaxed mb-6 px-2">
-                                                    No flash racks. No cookie-cutter work.<br />
-                                                    Every piece drawn from scratch — built around <span className="text-accent-primary not-italic font-black">you</span>.
-                                                </p>
+                                                <div className="tabs_line w-1/2 mx-auto mb-0"></div>
 
                                                 {/* Artist chips */}
-                                                <div className="flex flex-col gap-2 w-full px-2 mb-6">
-                                                    {artists.map(a => (
-                                                        <div key={a.id} className="flex items-center gap-3 border-l-4 border-accent-primary pl-3 py-1">
-                                                            <div className="flex flex-col text-left">
-                                                                <span className="font-black uppercase italic text-foreground text-sm leading-none">{a.name}</span>
-                                                                <span className="text-accent-primary font-bold uppercase text-[0.6rem] tracking-widest">{a.specialty}</span>
-                                                            </div>
-                                                        </div>
-                                                    ))}
+                                                <div className="flex flex-col gap-6 w-full px-2 mb-6 -mt-4">
+                                                    <div className="border-l-4 border-accent-primary pl-3 py-1">
+                                                        <label className="font-black uppercase italic text-foreground text-sm leading-none block">Shya Morris</label>
+                                                        <p className="text-accent-primary font-bold uppercase text-[0.6rem] tracking-widest mt-0.5 mb-2">Raw Blackwork</p>
+                                                        <p className="text-foreground/60 text-xs leading-relaxed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vehicula sapien vel nulla fermentum, ac tincidunt purus posuere.</p>
+                                                    </div>
+                                                    <div className="border-l-4 border-accent-primary pl-3 py-1">
+                                                        <label className="font-black uppercase italic text-foreground text-sm leading-none block">Megan Rohr</label>
+                                                        <p className="text-accent-primary font-bold uppercase text-[0.6rem] tracking-widest mt-0.5 mb-2">Biomechanical Surrealism</p>
+                                                        <p className="text-foreground/60 text-xs leading-relaxed">Pellentesque habitant morbi tristique senectus et netus. Sed euismod magna ac urna dignissim, vel commodo velit volutpat.</p>
+                                                    </div>
                                                 </div>
 
-                                                <a href="#about" className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase hover:text-accent-primary transition-colors cursor-pointer w-max mx-auto md:mx-0">MEET THE ARTISTS →</a>
+                                                <a href="#about" className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase hover:text-accent-primary transition-colors cursor-pointer w-max mx-auto md:mx-0">PORTFOLIO →</a>
                                             </div>
                                             {/* Tab 2 Left */}
                                             <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black bg-accent-primary shadow-hard rounded-[var(--border-radius--medium)] p-6">
@@ -265,7 +251,7 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
                                         <div className="w-full h-full relative overflow-visible">
                                             {/* Tab 1 Right - Artists */}
                                             <div className="tabs_video p-4 md:p-8 custom-scrollbar border-4 border-grunge-black overflow-hidden bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--medium)]">
-                                                <div className="grid md:grid-cols-1 xl:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                                                <div className="grid grid-cols-2 gap-8 max-w-4xl mx-auto items-start">
                                                     {artists.map(artist => (
                                                         <ArtistProfile key={artist.id} {...artist} />
                                                     ))}
@@ -369,14 +355,14 @@ const Home: React.FC<HomeProps> = ({ isTransitionStarted: _isTransitionStarted }
                         </p>
 
                         <div className="bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--xsmall)] p-4 border-4 border-grunge-black">
-                            <div className="grid grid-cols-1 gap-8">
+                            <div className="grid grid-cols-2 gap-6 mx-auto">
                                 {artists.map(artist => (
                                     <ArtistProfile key={`mobile-${artist.id}`} {...artist} />
                                 ))}
                             </div>
                         </div>
 
-                        <a href="#about" className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase hover:text-accent-primary transition-colors cursor-pointer w-max mx-auto mt-2">MEET THE ARTISTS →</a>
+                        <a href="#about" className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase hover:text-accent-primary transition-colors cursor-pointer w-max mx-auto mt-2">PORTFOLIO →</a>
                     </div>
 
                     {/* Tab 2 Pair: LATEST CUTS */}
