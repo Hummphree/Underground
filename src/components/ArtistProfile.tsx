@@ -9,17 +9,23 @@ interface ArtistProfileProps {
     specialty: string;
     bio: string;
     role?: string;
+    photo?: string;
 }
 
-const ArtistProfile: React.FC<ArtistProfileProps> = ({ id, name, specialty, bio, role = "LEAD ARTIST" }) => {
+const ArtistProfile: React.FC<ArtistProfileProps> = ({ id, name, specialty, bio, role = "LEAD ARTIST", photo }) => {
     return (
         <GlassCard className="flex flex-col h-full items-stretch p-0 overflow-hidden" withTape>
             <div className="w-full h-80 bg-grunge-black flex items-center justify-center relative overflow-hidden group">
-                <div className="absolute inset-0 grayscale contrast-150 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700 opacity-40">
-                    {/* Image placeholder */}
-                    <div className="w-full h-full bg-accent-primary/20 flex items-center justify-center font-black text-4xl italic text-foreground/20 uppercase">
-                        {name}
-                    </div>
+                <div className="absolute inset-0 grayscale contrast-150 brightness-75 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-700">
+                    {photo ? (
+                        <img src={photo} alt={name} className="w-full h-full object-cover" />
+                    ) : (
+                        <img
+                            src={`https://picsum.photos/seed/${encodeURIComponent(name)}/600/400`}
+                            alt={name}
+                            className="w-full h-full object-cover"
+                        />
+                    )}
                 </div>
                 <div className="absolute top-4 left-4 bg-accent-primary text-grunge-black px-3 py-1 font-black uppercase italic text-xs rotate-[-5deg]">
                     {role}

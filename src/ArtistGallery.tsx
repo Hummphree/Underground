@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Gallery from './components/Gallery';
 import { ChevronLeft, Disc } from 'lucide-react';
@@ -12,6 +12,12 @@ const ArtistGallery: React.FC = () => {
     };
 
     const artist = id ? artists[id] : null;
+
+    useEffect(() => {
+        if (artist) {
+            document.title = `${artist.name} | Tattoo Gallery – Below Ground Ink Kane, PA`;
+        }
+    }, [artist]);
 
     if (!artist) {
         return (

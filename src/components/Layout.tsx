@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Instagram, MapPin, Clock } from 'lucide-react';
 
 interface LayoutProps {
     children: React.ReactNode;
@@ -13,7 +13,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return (
         <div className="min-h-screen bg-background selection:bg-accent-primary selection:text-grunge-black">
             <div className="relative z-10 flex flex-col min-h-screen">
-                <header id="global-header" className="h-24 flex items-center justify-between px-8 border-b-8 border-grunge-black bg-accent-primary sticky top-0 z-50">
+                <header id="global-header" className="h-24 flex items-center justify-between px-8 border-b-8 border-grunge-black bg-accent-primary sticky top-0 z-[100]">
                     <div className="flex items-center gap-6">
                         <Link to="/" className="flex items-center gap-3 group relative">
                             <div className="w-28 h-28 flex items-center justify-center -rotate-3 group-hover:rotate-0 transition-transform overflow-hidden shrink-0 relative">
@@ -25,8 +25,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                     <nav className="hidden md:flex gap-4">
                         <Link to="/events" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Events</Link>
                         <Link to="/#frontline" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors rotate-1">Meet the Artists</Link>
-                        <Link to="/scheduling" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Schedule Now</Link>
                         <Link to="/aftercare" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors rotate-1">Aftercare</Link>
+                        <Link to="/scheduling" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Schedule Now</Link>
+                        <Link to="/contact" className="bg-grunge-black text-foreground px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors -rotate-1">Contact</Link>
                     </nav>
                 </header>
 
@@ -52,11 +53,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         {/* Logo Section */}
                         <div className="flex flex-col items-center md:items-start gap-6">
                             <div className="flex gap-4 items-center">
-                                <img src="/Logo_White.png" alt="Below Ground Ink Secondary" className="w-20 h-20 md:w-24 md:h-24 object-contain rotate-3 hover:rotate-0 transition-transform bg-foreground/5 rounded-full p-2 border-2 border-foreground/20" />
+                                <img src="/Logo_White.png" alt="Below Ground Ink logo" className="w-20 h-20 md:w-24 md:h-24 object-contain rotate-3 hover:rotate-0 transition-transform bg-foreground/5 rounded-full p-2 border-2 border-foreground/20" />
                             </div>
                             <div className="flex flex-col font-black uppercase italic tracking-[0.2em] text-sm opacity-60 text-center md:text-left">
                                 <span>Below Ground Ink</span>
-                                <span>SUBTERRANEAN SESSIONS</span>
+                                <span>© 2026 Studio Humphrey</span>
                             </div>
                         </div>
 
@@ -69,20 +70,41 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             <Link to="/aftercare" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Aftercare</Link>
                         </div>
 
-                        {/* Contact Info */}
+                        {/* Contact & Hours */}
                         <div className="flex flex-col gap-4 text-center md:text-right">
                             <h3 className="font-black uppercase italic tracking-widest text-accent-primary text-xl mb-2">Contact</h3>
-                            <a href="tel:+1800INKDEEP" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">1-800-INK-DEEP</a>
-                            <a href="mailto:booking@belowground.ink" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">booking@belowground.ink</a>
-                            <p className="font-bold uppercase tracking-widest text-xs text-foreground/60 mt-1">123 Underground Ave<br />Seattle, WA 98101</p>
+                            <Link to="/contact" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Get in Touch</Link>
+                            <Link to="/scheduling" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">Book a Session</Link>
+                            <a href="tel:+18005551234" className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">1-800-INK-DEEP</a>
+                            <a href="mailto:booking@belowgroundink.com" className="font-bold uppercase tracking-widest text-xs text-foreground/60 hover:text-accent-primary transition-colors break-all">booking@belowgroundink.com</a>
                         </div>
-                    </div>
 
-                    <div className="max-w-7xl mx-auto mt-16 pt-8 border-t-4 border-foreground/10 flex flex-col md:flex-row justify-between items-center gap-4 opacity-60 text-xs">
-                        <p className="font-black uppercase italic tracking-[0.2em]">© Humphrey Studio 2026</p>
-                        <div className="flex gap-8 font-black uppercase italic tracking-widest">
-                            <span>DIY OR DIE</span>
-                            <span>NO SELL OUTS</span>
+                        {/* Hours */}
+                        <div className="flex flex-col gap-3 text-center md:text-right">
+                            <h3 className="font-black uppercase italic tracking-widest text-accent-primary text-xl mb-2 flex items-center gap-2 justify-center md:justify-end">
+                                <Clock className="w-4 h-4" /> Hours
+                            </h3>
+                            <p className="font-bold uppercase tracking-widest text-xs text-foreground/80">Mon – Fri: 11am – 8pm</p>
+                            <p className="font-bold uppercase tracking-widest text-xs text-foreground/80">Sat: 10am – 6pm</p>
+                            <p className="font-bold uppercase tracking-widest text-xs text-foreground/60">Sun: Closed</p>
+                            <div className="flex items-center gap-2 justify-center md:justify-end mt-1">
+                                <MapPin className="w-3 h-3 text-accent-primary" />
+                                <a href="https://maps.google.com/?q=Kane,+PA" target="_blank" rel="noopener noreferrer" className="font-bold uppercase tracking-widest text-xs hover:text-accent-primary transition-colors">123 Underground Ave, Kane PA</a>
+                            </div>
+                        </div>
+
+                        {/* Social & Legal */}
+                        <div className="flex flex-col gap-4 text-center md:text-right">
+                            <h3 className="font-black uppercase italic tracking-widest text-accent-primary text-xl mb-2">Follow</h3>
+                            <a href="https://instagram.com/belowgroundink" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 justify-center md:justify-end font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors">
+                                <Instagram className="w-4 h-4" /> Instagram
+                            </a>
+                            <Link
+                                to="/consent"
+                                className="font-bold uppercase tracking-widest text-sm hover:text-accent-primary transition-colors"
+                            >
+                                Consent Form
+                            </Link>
                         </div>
                     </div>
                 </footer>

@@ -4,8 +4,7 @@ export interface Event {
     date: string;
     location: string;
     description: string;
+    tag?: string;
 }
 
-export const events: Event[] = [
-
-];
+export const events: Event[] = [];

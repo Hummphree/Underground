@@ -162,3 +162,38 @@ body::before {
 ::-webkit-scrollbar-thumb:hover {
   background: #EBE5C2;
 }
+
+/* ── Portfolio image: corner-mask reveal effect ─────────────────────── */
+.portfolio-img {
+  --_g: 10%/45% 45% no-repeat conic-gradient(#000 0 0);
+  mask:
+    left var(--_i, ) top var(--_g),
+    bottom var(--_i, ) left var(--_g),
+    top var(--_i, ) right var(--_g),
+    right var(--_i, ) bottom var(--_g);
+  filter: grayscale(1);
+  transition: mask 0.3s linear, filter 0.3s linear;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portfolio-img:hover {
+  --_i: 10%;
+  filter: grayscale(0);
+}
+
+/* ── Portfolio card: shadow fragments → unified on hover ─────────────── */
+.grunge-card.portfolio-card {
+  /* Portfolio card: no extra shadow, hover lift neutralised */
+  box-shadow: none;
+  transition: none;
+}
+
+.grunge-card.portfolio-card:hover {
+  box-shadow: none;
+  /* neutralize the grunge-card:hover translate so we don't get a double */
+  transform: none;
+}

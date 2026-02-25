@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ArtistProfile from './components/ArtistProfile';
@@ -18,6 +19,7 @@ const Home: React.FC = () => {
             role: "LEAD ARTIST",
             specialty: "RAW BLACKWORK",
             bio: "Master of shadows and fine line geometry. Shya explores the intersection of ancient mysticism and modern subculture.",
+            photo: "https://picsum.photos/seed/shya-morris-artist/600/400",
         },
         {
             id: "2",
@@ -25,27 +27,39 @@ const Home: React.FC = () => {
             role: "APPRENTICE",
             specialty: "BIOMECHANICAL SURREALISM",
             bio: "Crafting vivid nightmares and otherworldly organisms. Megan's work is a celebration of the strange and the beautiful.",
+            photo: "https://picsum.photos/seed/megan-rohr-artist/600/400",
         }
     ];
+
+    const PORTFOLIO_SEEDS = ['tat01', 'tat02', 'tat03', 'tat04', 'tat05', 'tat06', 'tat07', 'tat08', 'tat09'];
+
+    const shuffledPortfolio = useMemo(() => {
+        const all = [
+            ...PORTFOLIO_SEEDS.map(seed => ({ seed: `shya-morris-${seed}`, artist: 'SHYA MORRIS' })),
+            ...PORTFOLIO_SEEDS.map(seed => ({ seed: `megan-rohr-${seed}`, artist: 'MEGAN ROHR' })),
+        ];
+        // Fisher-Yates shuffle
+        for (let i = all.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [all[i], all[j]] = [all[j], all[i]];
+        }
+        return all;
+    }, []);
 
     const introRef = useRef<HTMLDivElement>(null);
     const textCenterRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        document.title = 'Below Ground Ink | Custom Tattoo Studio in Kane, PA';
+
         // Initial page load animation for header (slide in from top)
         gsap.fromTo("#global-header",
             { y: -100, opacity: 0 },
             { y: 0, opacity: 1, duration: 2, delay: 1, ease: "power3.out" }
         );
 
-        // Pin the intro text section
-        const st = ScrollTrigger.create({
-            trigger: introRef.current,
-            start: "top top",
-            end: "bottom top",
-            pin: textCenterRef.current,
-            pinSpacing: false
-        });
+        // Removed old intro pinning since it's now fixed
+        const st = { kill: () => { } }; // Dummy to avoid breaking cleanup
 
         // Hide header on scroll down, show on scroll up
         const headerScrollTrigger = ScrollTrigger.create({
@@ -69,18 +83,19 @@ const Home: React.FC = () => {
         // Smoothly fade out ONLY the poster as user scrolls down the intro
         const fadeAnimation = gsap.to(textCenterRef.current, {
             opacity: 0,
-            y: -20,
+            y: -50,
+            scale: 0.95,
             scrollTrigger: {
-                trigger: introRef.current,
-                start: "20% top", // start fading slightly later after scroll begins
-                end: "80% top",   // finish fading before the new tabs overlap completely
+                trigger: "body",
+                start: "0% top",
+                end: "500px top",
                 scrub: true,
             }
         });
 
         const handleScroll = () => {
             let scrollPosition = window.scrollY;
-            let windowHeight = window.innerHeight + 550; // +550 = increasing the scroll distance before each class changes
+            let windowHeight = window.innerHeight + 150; // slightly shorter interval so tabs feel faster
             let sections = document.querySelectorAll('.tabs_let-content');
             let videos = document.querySelectorAll('.tabs_video');
             if (sections.length === 0 || videos.length === 0) return;
@@ -88,11 +103,14 @@ const Home: React.FC = () => {
             let lastSectionIndex = sections.length - 1;
 
             sections.forEach((section, index) => {
-                if (scrollPosition >= (index * windowHeight) && scrollPosition < ((index + 1) * windowHeight)) {
+                // First tab comes up when scrollPosition crosses 50px
+                let start = index === 0 ? 50 : index * windowHeight;
+                let end = (index + 1) * windowHeight;
+
+                if (scrollPosition >= start && scrollPosition < end) {
                     section.classList.add('is-1');
                     videos[index].classList.add('is-1');
                 } else {
-                    // Remove is-1 class from all sections except the last one
                     if (index !== lastSectionIndex) {
                         section.classList.remove('is-1');
                         videos[index].classList.remove('is-1');
@@ -101,7 +119,8 @@ const Home: React.FC = () => {
             });
 
             // Keep is-1 class on the last section until user scrolls past it
-            if (scrollPosition > (lastSectionIndex * windowHeight)) {
+            let lastStart = lastSectionIndex * windowHeight;
+            if (scrollPosition >= lastStart) {
                 sections[lastSectionIndex].classList.add('is-1');
                 videos[lastSectionIndex].classList.add('is-1');
             } else {
@@ -125,11 +144,11 @@ const Home: React.FC = () => {
 
     return (
         <div className="w-full">
-            <div className="intro-wrapper" ref={introRef}>
-                <div className="intro">
+            <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center pt-24" ref={introRef}>
+                <div className="w-full h-full">
                     <div className="text-align-center" ref={textCenterRef}>
                         {/* The old Hero Poster content exactly as it was, but without max-w-6xl container directly framing it */}
-                        <div className="max-w-6xl mx-auto py-12 px-4 h-full flex flex-col justify-center relative">
+                        <div className="max-w-6xl mx-auto py-12 px-4 h-full flex flex-col justify-center relative pointer-events-auto">
                             <section className="relative group w-full max-w-4xl mx-auto shadow-2xl">
                                 <div className="absolute -inset-4 border-8 border-grunge-black -rotate-1 group-hover:rotate-0 transition-transform duration-500" />
                                 <div className="relative bg-grunge-black p-12 md:p-24 space-y-12 text-center rotate-1 group-hover:rotate-0 transition-transform duration-500 overflow-hidden cursor-crosshair">
@@ -148,12 +167,12 @@ const Home: React.FC = () => {
                                     </div>
 
                                     <div className="flex flex-wrap justify-center gap-6 pt-12">
-                                        <div className="px-6 py-3 border-4 border-accent-primary text-accent-primary font-black uppercase italic hover:bg-accent-primary hover:text-grunge-black transition-all rotate-[-1deg] cursor-pointer">
+                                        <Link to="/scheduling" className="px-6 py-3 border-4 border-accent-primary text-accent-primary font-black uppercase italic hover:bg-accent-primary hover:text-grunge-black transition-all rotate-[-1deg]">
                                             GET INKED
-                                        </div>
-                                        <div className="px-6 py-3 border-4 border-foreground text-foreground font-black uppercase italic hover:bg-foreground hover:text-grunge-black transition-all rotate-[2deg] cursor-pointer">
+                                        </Link>
+                                        <Link to="/contact" className="px-6 py-3 border-4 border-foreground text-foreground font-black uppercase italic hover:bg-foreground hover:text-grunge-black transition-all rotate-[2deg]">
                                             THE MANIFESTO
-                                        </div>
+                                        </Link>
                                     </div>
                                 </div>
                             </section>
@@ -168,18 +187,52 @@ const Home: React.FC = () => {
                         <div className="tabs_height">
                             <div className="tabs_sticky-wrapper">
                                 <div className="tabs_component">
-                                    <div className="tabs_left border-4 border-grunge-black bg-grunge-black relative shadow-hard">
-                                        <div className="tabs_left-top">
+                                    <div className="tabs_left relative h-full rounded-[var(--border-radius--medium)]">
+                                        <div className="tabs_left-top w-full h-full relative">
                                             {/* Tab 1 Left */}
-                                            <div className="tabs_let-content is-1">
-                                                <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 rotate-1 inline-block mt-12 mb-8 shadow-hard-sm">
+                                            <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6 gap-0">
+                                                <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 rotate-1 inline-block mt-8 mb-6 shadow-hard-sm">
                                                     THE FRONT LINE
                                                 </h2>
-                                                <div className="tabs_line w-1/2 mx-auto"></div>
-                                                <p className="tabs-p pt-8 text-foreground/80 italic font-bold">MEET THE ARTISTS</p>
+
+                                                {/* Studio stats */}
+                                                <div className="grid grid-cols-3 gap-3 mb-6 w-full">
+                                                    {[
+                                                        { num: '10+', label: 'YRS RUNNING' },
+                                                        { num: '2', label: 'ARTISTS' },
+                                                        { num: '100%', label: 'CUSTOM' },
+                                                    ].map(({ num, label }) => (
+                                                        <div key={label} className="border-2 border-accent-primary/40 bg-background/10 py-3 text-center">
+                                                            <p className="text-accent-primary font-black text-2xl italic leading-none">{num}</p>
+                                                            <p className="text-foreground/50 font-bold uppercase text-[0.6rem] tracking-widest mt-1">{label}</p>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                <div className="tabs_line w-1/2 mx-auto mb-6"></div>
+
+                                                {/* Tagline */}
+                                                <p className="text-foreground/70 italic font-semibold text-sm leading-relaxed mb-6 px-2">
+                                                    No flash racks. No cookie-cutter work.<br />
+                                                    Every piece drawn from scratch — built around <span className="text-accent-primary not-italic font-black">you</span>.
+                                                </p>
+
+                                                {/* Artist chips */}
+                                                <div className="flex flex-col gap-2 w-full px-2 mb-6">
+                                                    {artists.map(a => (
+                                                        <div key={a.id} className="flex items-center gap-3 border-l-4 border-accent-primary pl-3 py-1">
+                                                            <div className="flex flex-col text-left">
+                                                                <span className="font-black uppercase italic text-foreground text-sm leading-none">{a.name}</span>
+                                                                <span className="text-accent-primary font-bold uppercase text-[0.6rem] tracking-widest">{a.specialty}</span>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+
+                                                <p className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase">MEET THE ARTISTS →</p>
                                             </div>
                                             {/* Tab 2 Left */}
-                                            <div className="tabs_let-content">
+                                            <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6">
                                                 <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 -rotate-2 inline-block mt-12 mb-8 shadow-hard-sm">
                                                     LATEST CUTS
                                                 </h2>
@@ -187,7 +240,7 @@ const Home: React.FC = () => {
                                                 <p className="tabs-p pt-8 text-foreground/80 italic font-bold">RECENT SESSIONS</p>
                                             </div>
                                             {/* Tab 3 Left */}
-                                            <div className="tabs_let-content">
+                                            <div className="tabs_let-content border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6">
                                                 <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 rotate-[-1deg] inline-block mt-12 mb-8 shadow-hard-sm">
                                                     GIG LIST
                                                 </h2>
@@ -197,10 +250,10 @@ const Home: React.FC = () => {
                                         </div>
                                     </div>
 
-                                    <div className="tabs_right border-4 border-grunge-black overflow-hidden bg-background relative shadow-hard">
-                                        <div className="w-full h-full p-4 md:p-12 relative overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')]">
+                                    <div className="tabs_right relative rounded-[var(--border-radius--medium)]">
+                                        <div className="w-full h-full relative overflow-visible">
                                             {/* Tab 1 Right - Artists */}
-                                            <div className="tabs_video is-1 p-4 md:p-8 custom-scrollbar">
+                                            <div className="tabs_video p-4 md:p-8 custom-scrollbar border-4 border-grunge-black overflow-hidden bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--medium)]">
                                                 <div className="grid md:grid-cols-1 xl:grid-cols-2 gap-12 max-w-5xl mx-auto">
                                                     {artists.map(artist => (
                                                         <ArtistProfile key={artist.id} {...artist} />
@@ -209,26 +262,26 @@ const Home: React.FC = () => {
                                             </div>
 
                                             {/* Tab 2 Right - Image Marquee */}
-                                            <div className="tabs_video flex items-center justify-center p-4 custom-scrollbar">
+                                            <div className="tabs_video flex items-center justify-center p-4 custom-scrollbar border-4 border-grunge-black overflow-hidden bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--medium)]">
                                                 <div className="w-full overflow-hidden border-y-8 border-grunge-black bg-grunge-black py-12 relative shadow-2xl h-max -rotate-2 scale-105">
                                                     <div className="flex animate-marquee gap-8 px-4 h-full items-center">
-                                                        {[...Array(6)].map((_, i) => (
-                                                            <div key={i} className="w-72 h-80 bg-accent-secondary/10 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group overflow-hidden">
-                                                                <div className="absolute inset-0 bg-accent-primary/5 group-hover:bg-transparent transition-colors z-10" />
-                                                                <div className="w-full h-full flex items-center justify-center font-black text-4xl italic text-foreground/5 uppercase tracking-tighter">
-                                                                    SESSION 0{i + 1}
+                                                        {shuffledPortfolio.map((item, i) => (
+                                                            <div key={i} className="w-72 h-80 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group overflow-hidden">
+                                                                <img src={`https://picsum.photos/seed/${item.seed}/288/320`} alt={`${item.artist} - Tattoo ${i + 1}`} className="w-full h-full object-cover" />
+                                                                <div className="absolute inset-0 bg-accent-primary/10 group-hover:bg-transparent transition-colors z-10" />
+                                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-grunge-black/80 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                                                                    <p className="font-black uppercase italic text-accent-primary text-xs tracking-widest truncate">{item.artist}</p>
                                                                 </div>
-                                                                <div className="absolute bottom-4 left-4 right-4 h-1 bg-accent-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
                                                             </div>
                                                         ))}
                                                         {/* Duplicate for seamless loop */}
-                                                        {[...Array(6)].map((_, i) => (
-                                                            <div key={`dup-${i}`} className="w-72 h-80 bg-accent-secondary/10 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group overflow-hidden">
-                                                                <div className="absolute inset-0 bg-accent-primary/5 group-hover:bg-transparent transition-colors z-10" />
-                                                                <div className="w-full h-full flex items-center justify-center font-black text-4xl italic text-foreground/5 uppercase tracking-tighter">
-                                                                    SESSION 0{i + 1}
+                                                        {shuffledPortfolio.map((item, i) => (
+                                                            <div key={`dup-${i}`} className="w-72 h-80 shrink-0 border-4 border-grunge-black grayscale contrast-125 hover:grayscale-0 transition-all duration-500 relative group overflow-hidden">
+                                                                <img src={`https://picsum.photos/seed/${item.seed}/288/320`} alt={`${item.artist} - Tattoo ${i + 1}`} className="w-full h-full object-cover" />
+                                                                <div className="absolute inset-0 bg-accent-primary/10 group-hover:bg-transparent transition-colors z-10" />
+                                                                <div className="absolute bottom-0 left-0 right-0 p-3 bg-grunge-black/80 backdrop-blur-sm translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                                                                    <p className="font-black uppercase italic text-accent-primary text-xs tracking-widest truncate">{item.artist}</p>
                                                                 </div>
-                                                                <div className="absolute bottom-4 left-4 right-4 h-1 bg-accent-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500" />
                                                             </div>
                                                         ))}
                                                     </div>
@@ -236,7 +289,7 @@ const Home: React.FC = () => {
                                             </div>
 
                                             {/* Tab 3 Right - Events */}
-                                            <div className="tabs_video p-4 md:p-8 custom-scrollbar">
+                                            <div className="tabs_video p-4 md:p-8 custom-scrollbar border-4 border-grunge-black overflow-hidden bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--medium)]">
                                                 <div className="max-w-2xl mx-auto pt-12">
                                                     {upcomingEvents.length === 0 ? (
                                                         <div className="flex flex-col items-center justify-center p-12 border-4 border-grunge-black bg-grunge-black/5 rotate-1 cursor-not-allowed">
@@ -272,6 +325,43 @@ const Home: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* About */}
+            <section className="py-16 px-6 md:px-16 bg-background border-t-4 border-grunge-black">
+                {/* Blurb */}
+                <p className="text-foreground/60 italic font-semibold text-base leading-relaxed max-w-2xl mx-auto text-center mb-14">
+                    Below Ground Ink is a custom tattoo studio in <span className="text-accent-primary not-italic font-black">Kane, Pennsylvania</span> —
+                    owned and operated by Shya Morris and Megan Rohr. Every piece is drawn from scratch, built for the person in the chair.
+                    No flash racks. No walk-ins. No regrets.
+                </p>
+
+                {/* Owner cards */}
+                <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    {/* Shya */}
+                    <div className="group flex gap-5 items-start border-4 border-grunge-black bg-grunge-black p-6 shadow-hard hover:border-accent-primary transition-colors duration-300">
+                        <div className="w-20 h-20 shrink-0 overflow-hidden border-2 border-accent-primary">
+                            <img src="https://picsum.photos/seed/shya-morris-about/160/160" alt="Shya Morris" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-accent-primary font-black uppercase italic text-[10px] tracking-widest">Co-Owner · Lead Artist</p>
+                            <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground">Shya Morris</h3>
+                            <p className="text-foreground/50 italic text-sm font-semibold leading-snug">Raw blackwork &amp; dark illustrative work. A decade of ink on skin, no apologies.</p>
+                        </div>
+                    </div>
+
+                    {/* Megan */}
+                    <div className="group flex gap-5 items-start border-4 border-grunge-black bg-grunge-black p-6 shadow-hard hover:border-accent-primary transition-colors duration-300">
+                        <div className="w-20 h-20 shrink-0 overflow-hidden border-2 border-accent-primary">
+                            <img src="https://picsum.photos/seed/megan-rohr-about/160/160" alt="Megan Rohr" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
+                        </div>
+                        <div className="space-y-1">
+                            <p className="text-accent-primary font-black uppercase italic text-[10px] tracking-widest">Co-Owner · Artist</p>
+                            <h3 className="text-xl font-black uppercase italic tracking-tight text-foreground">Megan Rohr</h3>
+                            <p className="text-foreground/50 italic text-sm font-semibold leading-snug">Biomechanical surrealism — vivid, strange, and built to last.</p>
                         </div>
                     </div>
                 </div>

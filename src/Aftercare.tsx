@@ -1,15 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GlassCard from './components/GlassCard';
 import { Shield, Droplets, Sun, AlertTriangle } from 'lucide-react';
 
 const Aftercare: React.FC = () => {
+    useEffect(() => {
+        document.title = 'Tattoo Aftercare Guide | Below Ground Ink – Kane, PA';
+    }, []);
+
     return (
         <div className="max-w-5xl mx-auto space-y-20 animate-in fade-in duration-700">
             <div className="text-center space-y-6">
                 <div className="inline-block bg-grunge-black p-4 rotate-[-3deg]">
                     <Shield className="w-12 h-12 text-accent-primary" />
                 </div>
-                <h1 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary py-4 px-8 rotate-1 inline-block">
+                <h1 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-8 rotate-1 inline-block">
                     AFTER<span className="text-foreground">CARE</span>
                 </h1>
                 <p className="text-foreground font-black text-xl uppercase tracking-widest italic pt-4">

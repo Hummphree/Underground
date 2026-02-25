@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Radio } from 'lucide-react';
 import { events } from './data/events';
 
 const Events: React.FC = () => {
+    useEffect(() => {
+        document.title = 'Events & Pop-Ups | Below Ground Ink – Kane, PA';
+    }, []);
+
     return (
         <div className="max-w-6xl mx-auto py-32 flex flex-col items-center justify-center space-y-12 animate-in fade-in zoom-in duration-700">
             <div className="bg-grunge-black p-8 rotate-[-5deg] border-4 border-accent-primary group hover:rotate-0 transition-transform duration-500">

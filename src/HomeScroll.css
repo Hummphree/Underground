@@ -127,7 +127,7 @@ sup {
 }
 
 .section_tabs {
-    z-index: 99;
+    z-index: 10;
     border-radius: var(--border-radius--xlarge);
     /* background-color: var(--gray-800); */
     /* Custom theme change */
@@ -158,10 +158,10 @@ sup {
 }
 
 .tabs_sticky-wrapper {
-    height: 100vh;
+    height: calc(100vh - 96px - 8px);
     position: -webkit-sticky;
     position: sticky;
-    top: 5vh;
+    top: calc(96px + 8px);
 }
 
 .tabs_container {
@@ -215,12 +215,14 @@ sup {
     display: flex;
     position: absolute;
     opacity: 0;
-    transition: opacity 0.5s;
+    transform: translateY(40px);
+    transition: opacity 0.5s, transform 0.5s;
     pointer-events: none;
 }
 
 .tabs_let-content.is-1 {
     opacity: 1;
+    transform: translateY(0);
     pointer-events: auto;
 }
 

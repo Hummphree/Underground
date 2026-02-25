@@ -1,13 +1,108 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>underground</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Content Security Policy -->
+  <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self';
+        script-src 'self' 'unsafe-inline' https://cal.com https://*.cal.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+        frame-src https://cal.com https://*.cal.com;
+        img-src 'self' data: blob: https://picsum.photos https://fastly.picsum.photos;
+        connect-src 'self' https://cal.com https://*.cal.com;
+      " />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/Logo.png" />
+  <link rel="apple-touch-icon" href="/Logo.png" />
+
+  <!-- Viewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO -->
+  <title>Below Ground Ink | Tattoo Studio in Kane, PA | Shya Morris & Megan Rohr</title>
+  <meta name="description"
+    content="Below Ground Ink is a custom tattoo studio in Kane, PA. Artists Shya Morris and Megan Rohr specialize in raw blackwork, fine line geometry, and biomechanical surrealism. Book your session today." />
+  <meta name="keywords"
+    content="tattoo studio Kane PA, Kane Pennsylvania tattoo, Below Ground Ink, Shya Morris tattoo, Megan Rohr tattoo, blackwork tattoo, fine line tattoo, biomechanical tattoo, custom tattoo Kane" />
+  <meta name="author" content="Below Ground Ink" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://belowgroundink.com/" />
+
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#1a1a1a" />
+
+  <!-- Open Graph (Facebook, LinkedIn, etc.) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://belowgroundink.com/" />
+  <meta property="og:title" content="Below Ground Ink | Tattoo Studio in Kane, PA" />
+  <meta property="og:description"
+    content="Custom tattoo studio in Kane, PA. Featuring artists Shya Morris (raw blackwork & fine line) and Megan Rohr (biomechanical surrealism). Book your appointment online." />
+  <meta property="og:image" content="/Logo_White.png" />
+  <meta property="og:image:alt" content="Below Ground Ink tattoo studio logo" />
+  <meta property="og:site_name" content="Below Ground Ink" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Below Ground Ink | Tattoo Studio in Kane, PA" />
+  <meta name="twitter:description"
+    content="Custom tattoo studio in Kane, PA. Artists Shya Morris and Megan Rohr. Book online." />
+  <meta name="twitter:image" content="/Logo_White.png" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "TattooParlor",
+      "name": "Below Ground Ink",
+      "description": "Custom tattoo studio in Kane, PA, specializing in raw blackwork, fine line geometry, and biomechanical surrealism.",
+      "url": "https://belowgroundink.com",
+      "logo": "https://belowgroundink.com/Logo.png",
+      "image": "https://belowgroundink.com/Logo_White.png",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kane",
+        "addressRegion": "PA",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "41.6640",
+        "longitude": "-78.8128"
+      },
+      "areaServed": [
+        "Kane, PA",
+        "McKean County, PA",
+        "Warren County, PA"
+      ],
+      "priceRange": "$$",
+      "openingHours": "By Appointment",
+      "employee": [
+        {
+          "@type": "Person",
+          "name": "Shya Morris",
+          "jobTitle": "Lead Tattoo Artist",
+          "description": "Specialist in raw blackwork and fine line geometry."
+        },
+        {
+          "@type": "Person",
+          "name": "Megan Rohr",
+          "jobTitle": "Tattoo Artist",
+          "description": "Specialist in biomechanical surrealism and vivid custom work."
+        }
+      ],
+      "sameAs": []
+    }
+    </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
