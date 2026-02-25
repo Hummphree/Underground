@@ -150,8 +150,8 @@ const Home: React.FC = () => {
     }, []);
 
     return (
-        <div className="w-full">
-            <div className="fixed left-0 right-0 z-0 pointer-events-none flex items-center justify-center" style={{ top: '98px', bottom: '4px' }} ref={introRef}>
+        <div className="w-full flex flex-col">
+            <div className="relative lg:fixed left-0 right-0 z-0 pointer-events-none flex items-center justify-center min-h-[90vh] lg:min-h-0 lg:top-[98px] lg:bottom-1" ref={introRef}>
                 {/* Left margin video */}
                 <video
                     ref={marginVideoRef}
@@ -209,7 +209,7 @@ const Home: React.FC = () => {
             </div>
 
             <section id="frontline" className="section_tabs">
-                <div className="padding-section-large">
+                <div className="hidden lg:block padding-section-large">
                     <div className="tabs_container">
                         <div className="tabs_height">
                             <div className="tabs_sticky-wrapper">
@@ -352,6 +352,113 @@ const Home: React.FC = () => {
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* --- MOBILE VIEW --- */}
+                <div className="lg:hidden w-full flex flex-col gap-12 px-4 py-16 relative z-30 max-w-xl mx-auto">
+                    {/* Tab 1 Pair */}
+                    <div className="border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6 flex flex-col gap-6">
+                        <h2 className="text-4xl sm:text-5xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 rotate-1 inline-block mt-2 mb-2 shadow-hard-sm w-max">
+                            THE FRONT LINE
+                        </h2>
+
+                        <div className="grid grid-cols-3 gap-3 w-full">
+                            {[
+                                { num: '10+', label: 'YRS RUNNING' },
+                                { num: '2', label: 'ARTISTS' },
+                                { num: '100%', label: 'CUSTOM' },
+                            ].map(({ num, label }) => (
+                                <div key={`mob-stat-${label}`} className="border-2 border-accent-primary/40 bg-background/10 py-3 text-center">
+                                    <p className="text-accent-primary font-black text-xl italic leading-none">{num}</p>
+                                    <p className="text-foreground/50 font-bold uppercase text-[0.6rem] tracking-widest mt-1">{label}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div className="w-1/2 mx-auto h-px bg-foreground/20"></div>
+
+                        <p className="text-foreground/70 italic font-semibold text-sm leading-relaxed px-2 text-center">
+                            No flash racks. No cookie-cutter work.<br />
+                            Every piece drawn from scratch — built around <span className="text-accent-primary not-italic font-black">you</span>.
+                        </p>
+
+                        <div className="bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--xsmall)] p-4 border-4 border-grunge-black">
+                            <div className="grid grid-cols-1 gap-8">
+                                {artists.map(artist => (
+                                    <ArtistProfile key={`mobile-${artist.id}`} {...artist} />
+                                ))}
+                            </div>
+                        </div>
+
+                        <a href="#about" className="text-foreground/40 italic font-bold text-xs tracking-[0.2em] uppercase hover:text-accent-primary transition-colors cursor-pointer w-max mx-auto mt-2">MEET THE ARTISTS →</a>
+                    </div>
+
+                    {/* Tab 2 Pair: LATEST CUTS */}
+                    <div className="border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6 flex flex-col gap-2">
+                        <h2 className="text-4xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 -rotate-2 inline-block shadow-hard-sm w-max mx-auto">
+                            LATEST CUTS
+                        </h2>
+                        <p className="text-foreground/80 italic font-bold text-center text-sm mb-4">RECENT SESSIONS</p>
+
+                        <div className="border-4 border-grunge-black overflow-hidden rounded-[var(--border-radius--xsmall)] flex items-center bg-grunge-black/50 py-6">
+                            <div className="w-full overflow-hidden relative pointer-events-none">
+                                <div className="flex animate-marquee gap-4 px-4 h-full items-center pointer-events-auto">
+                                    {shuffledPortfolio.map((item, i) => (
+                                        <div key={`mobile-port-${i}`} className="w-40 h-48 shrink-0 border-4 border-grunge-black relative group/card overflow-hidden bg-background">
+                                            <img src={`https://picsum.photos/seed/${item.seed}/160/192`} alt={`${item.artist} - Tattoo`} className="w-full h-full object-cover grayscale" />
+                                            <div className="absolute inset-x-0 bottom-0 p-2 bg-grunge-black/90 backdrop-blur-sm z-20">
+                                                <p className="font-black uppercase italic text-accent-primary text-[10px] tracking-widest truncate">{item.artist}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {/* Duplicate for infinite loop */}
+                                    {shuffledPortfolio.map((item, i) => (
+                                        <div key={`mobile-port-dup-${i}`} className="w-40 h-48 shrink-0 border-4 border-grunge-black relative group/card overflow-hidden bg-background">
+                                            <img src={`https://picsum.photos/seed/${item.seed}/160/192`} alt={`${item.artist} - Tattoo`} className="w-full h-full object-cover grayscale" />
+                                            <div className="absolute inset-x-0 bottom-0 p-2 bg-grunge-black/90 backdrop-blur-sm z-20">
+                                                <p className="font-black uppercase italic text-accent-primary text-[10px] tracking-widest truncate">{item.artist}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Tab 3 Pair: GIG LIST */}
+                    <div className="border-4 border-grunge-black bg-grunge-black shadow-hard rounded-[var(--border-radius--medium)] p-6 flex flex-col gap-2">
+                        <h2 className="text-4xl font-black uppercase italic tracking-tighter text-grunge-black bg-accent-primary px-6 py-2 rotate-[-1deg] inline-block shadow-hard-sm w-max mx-auto">
+                            GIG LIST
+                        </h2>
+                        <p className="text-foreground/80 italic font-bold text-center text-sm mb-4">UPCOMING EVENTS</p>
+
+                        <div className="bg-background shadow-hard bg-[url('https://www.transparenttextures.com/patterns/asfalt-dark.png')] rounded-[var(--border-radius--xsmall)] p-4 border-4 border-grunge-black mt-2">
+                            {upcomingEvents.length === 0 ? (
+                                <div className="py-8 text-center opacity-40">
+                                    <h3 className="text-2xl font-black uppercase italic text-grunge-black tracking-tighter">NO UPCOMING EVENTS</h3>
+                                </div>
+                            ) : (
+                                <div className="grid gap-6">
+                                    {upcomingEvents.map(event => (
+                                        <div key={`mobile-event-${event.id}`} className="bg-accent-secondary border-4 border-grunge-black p-6 relative flex flex-col justify-center space-y-4">
+                                            <div className="bg-grunge-black text-accent-primary px-3 py-1 font-black uppercase italic text-xs w-max">
+                                                {event.date}
+                                            </div>
+                                            <h3 className="text-2xl font-black uppercase italic leading-none tracking-tighter text-grunge-black">
+                                                {event.title}
+                                            </h3>
+                                            <p className="text-sm font-bold uppercase italic text-grunge-black opacity-80 leading-tight">
+                                                {event.location}
+                                            </p>
+                                            <Link to="/events" className="px-4 py-2 border-4 border-grunge-black text-grunge-black font-black uppercase italic text-center text-sm">
+                                                SECURE ACCESS
+                                            </Link>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
