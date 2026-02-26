@@ -176,8 +176,8 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({ name, role = 'LEAD ARTIST
                 <div className={`ap-thumb-${uid}`}>
 
                     {/* Role badge */}
-                    <div className="absolute top-4 left-4 z-20 bg-accent-primary text-grunge-black px-3 py-1 font-black uppercase italic text-xs rotate-[-5deg] shadow-hard-sm pointer-events-none">
-                        {role}
+                    <div className="absolute top-4 left-4 z-20 bg-accent-primary text-grunge-black px-3 py-1 font-black uppercase italic text-xs rotate-[-5deg] shadow-hard-sm pointer-events-none border border-grunge-black">
+                        {role.toUpperCase()}
                     </div>
 
                     {/* SVG Mask */}
@@ -185,11 +185,11 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({ name, role = 'LEAD ARTIST
                         className={`ap-svg-${uid}`}
                         viewBox="0 0 50 75"
                         aria-label={`${name} — hover to view portfolio`}
-                        style={{ width: '100%', height: 'auto', display: 'block' }}
+                        style={{ width: '100%', height: 'auto', display: 'block', border: '4px solid var(--color-accent-primary)' }}
                     >
                         <defs>
                             <mask id={`mask-${uid}`} x="0" y="0" width="100" height="75">
-                                <rect x="0.5" y="0.5" width="49" height="74" fill="#fff" />
+                                <rect x="0.5" y="0.5" width="49" height="74" fill="#000" />
                                 {letters.map(({ ch, x }) => (
                                     <text
                                         key={ch + x}
@@ -197,6 +197,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({ name, role = 'LEAD ARTIST
                                         textAnchor="middle"
                                         y="75"
                                         dy="0"
+                                        fill="#fff"
                                     >
                                         {ch}
                                     </text>
@@ -210,7 +211,7 @@ const ArtistProfile: React.FC<ArtistProfileProps> = ({ name, role = 'LEAD ARTIST
                             height="74"
                             mask={`url(#mask-${uid})`}
                             fillOpacity="1"
-                            fill="#E3DFD2"
+                            fill="var(--color-accent-primary)"
                         />
                     </svg>
 

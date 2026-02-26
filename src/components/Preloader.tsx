@@ -12,7 +12,7 @@ const Preloader: React.FC<PreloaderProps> = ({ onTransitionStart, onComplete }) 
     const [isLoaded, setIsLoaded] = useState(false);
 
     // Streamlined frame sequence: 1-26 (skipping missing 5)
-    const frames = React.useMemo(() => [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26].map(num =>
+    const frames = React.useMemo(() => [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27].map(num =>
         `/assets/preloader/Frame${num}.PNG`
     ), []);
     const frameCount = frames.length;
@@ -61,6 +61,8 @@ const Preloader: React.FC<PreloaderProps> = ({ onTransitionStart, onComplete }) 
                     }
                 }
             });
+
+            tl.add(() => { }, "+=0.5"); // HOLD on the last frame
 
             tl.add(() => onTransitionStart?.()); // Reveal site content behind
 
