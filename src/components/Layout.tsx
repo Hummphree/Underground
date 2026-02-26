@@ -109,10 +109,10 @@ const Layout: React.FC<LayoutProps> = ({ children, isTransitionStarted }) => {
 
                     {/* Desktop: GooeyMenu on Left, Nav on right (near logo) */}
                     <div className="hidden md:flex justify-between items-center w-full h-full">
-                        <div className="relative z-[200]">
+                        <div className="relative z-[200] -translate-y-2">
                             <GooeyMenu origin="left" />
                         </div>
-                        <nav className="flex justify-end gap-2 xl:gap-4 pr-2 xl:pr-6">
+                        <nav className="flex items-center justify-end gap-2 xl:gap-4 pr-2 xl:pr-6 -translate-y-2">
                             <Link to="/events" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Events</Link>
                             <Link to="/#about" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">About</Link>
                             <Link to="/#frontline" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Portfolio</Link>
@@ -145,14 +145,14 @@ const Layout: React.FC<LayoutProps> = ({ children, isTransitionStarted }) => {
 
                     {/* Desktop: Right Nav and Mute Button */}
                     <div className="hidden md:flex justify-between items-center w-full h-full">
-                        <nav className="flex justify-start gap-2 xl:gap-4 pl-2 xl:pl-6">
+                        <nav className="flex items-center justify-start gap-2 xl:gap-4 pl-2 xl:pl-6 -translate-y-2">
                             <Link to="/aftercare" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Aftercare</Link>
                             <Link to="/scheduling" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform -rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Schedule</Link>
                             <Link to="/contact" className="bg-grunge-black text-foreground px-3 lg:px-4 py-1 font-black uppercase italic tracking-tighter hover:bg-background hover:text-grunge-black transition-colors transition-transform rotate-1 hover:rotate-0 shadow-[2px_2px_0px_rgba(0,0,0,0.4)] shadow-hard-sm text-xs lg:text-sm xl:text-base whitespace-nowrap">Contact</Link>
                         </nav>
 
                         {/* DESKTOP RIGHT: Mute Button */}
-                        <div className="relative z-[200] ml-4">
+                        <div className="relative z-[200] ml-4 -translate-y-2">
                             <button onClick={toggleMute} className="w-12 h-12 bg-grunge-black rounded-full flex items-center justify-center hover:scale-105 transition-transform" aria-label="Toggle Mute">
                                 {isMuted ? <VolumeX className="text-foreground w-6 h-6 stroke-[2.5]" /> : <Volume2 className="text-foreground w-6 h-6 stroke-[2.5]" />}
                             </button>
